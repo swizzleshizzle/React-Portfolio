@@ -41,6 +41,8 @@ const GRADIENT_COLORS = {
   to: new THREE.Color('#38bdf8'),   // sky-400
 }
 
+const hightlightColors = ["#c1b001", "#a8140e", "#4315aa", "#359d09", "#8f4762"];
+
 // Background color
 const BACKGROUND_COLOR = '#242424'
 //const BACKGROUND_COLOR = '#000000'
@@ -50,12 +52,12 @@ function GradientText({ text, position, fontSize = 5, scrollProgress = 0 }) {
   const ref = useRef()
   
   // Calculate animated position based on scroll progress
-  const animatedY = position[1] + (scrollProgress * 20); // Move up by 20 units when fully scrolled
+  const animatedY = position[1] + (scrollProgress * 40); // Move up by 20 units when fully scrolled
   const animatedZ = position[2] - (scrollProgress * 30); // Move back by 30 units when fully scrolled
   const animatedPosition = [position[0], animatedY, animatedZ];
   
   // Calculate opacity based on scroll progress
-  const opacity = 1 - (scrollProgress * 0.8); // Fade out to 0.2 opacity when fully scrolled
+  const opacity = 1 - (scrollProgress * 1); // Fade out to 0.2 opacity when fully scrolled
 
   useFrame(({ clock }) => {
     if (ref.current) {
@@ -555,6 +557,12 @@ function HeroThree() {
     };
 
     window.addEventListener('scroll', handleScroll);
+
+    window.addEventListener("mousedown", (e) => {
+      const color = hightlightColors.shift();
+      document.documentElement.style.setProperty("--highlight-color", color);
+      hightlightColors.push(color);
+    });
     
     // Call once on mount to initialize
     handleScroll();

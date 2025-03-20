@@ -17,8 +17,9 @@ const GRADIENT_COLORS = {
 }
 
 // Centralized explosion manager
-function ExplosionManager() {
+function ExplosionManager({ totalClicked, totalSkills }) {
   const [explosions, setExplosions] = useState([])
+  const [celebrationTriggered, setCelebrationTriggered] = useState(false)
   
   // Function to create a new explosion
   const triggerExplosion = (position) => {
@@ -38,17 +39,131 @@ function ExplosionManager() {
       delete window.triggerWordExplosion
     }
   }, [])
+
+  // Trigger celebration when all skills are clicked
+  useEffect(() => {
+    if (totalClicked === totalSkills && totalSkills > 0 && !celebrationTriggered) {
+      setCelebrationTriggered(true)
+      
+      // Create multiple explosions at different positions
+      const explosionCount = 10
+      for (let i = 0; i < explosionCount; i++) {
+        setTimeout(() => {
+          const randomPos = new THREE.Vector3(
+            (Math.random() - 0.5) * 30,
+            (Math.random() - 0.5) * 30,
+            (Math.random() - 0.5) * 30
+          )
+          triggerExplosion(randomPos)
+        }, i * 200) // Stagger the explosions
+      }
+      
+      // Vibrate device if supported (mobile haptic feedback)
+      if (navigator.vibrate) {
+        navigator.vibrate([100, 50, 100, 50, 200])
+      }
+    }
+  }, [totalClicked, totalSkills, celebrationTriggered])
   
   return explosions.map(explosion => (
     <ParticleExplosion
       key={explosion.id}
       position={explosion.position}
       colors={GRADIENT_COLORS}
-      count={100}
+      count={150}
       lifespan={3}
       onComplete={() => handleExplosionComplete(explosion.id)}
     />
   ))
+}
+
+// Counter display in the center of the word cloud
+function SkillCounter({ current, total }) {
+  const ref = useRef()
+  
+  // Pulse animation for the counter
+  useFrame(({ clock }) => {
+    if (ref.current) {
+      const pulse = Math.sin(clock.getElapsedTime() * 2) * 0.1 + 1
+      ref.current.scale.set(pulse, pulse, pulse)
+      
+      // Rotate slightly for visual interest
+      ref.current.rotation.y = Math.sin(clock.getElapsedTime() * 0.5) * 0.1
+    }
+  })
+  
+  return (
+    <Billboard position={[0, 0, 0]}>
+      <Text
+        ref={ref}
+        fontSize={5}
+        color="#ffffff"
+        anchorX="center"
+        anchorY="middle"
+        outlineWidth={0.1}
+        outlineColor="#000000"
+      >
+        {current}/{total}
+      </Text>
+    </Billboard>
+  )
+}
+
+// Timer component that shows elapsed time
+function Timer({ startTime, isComplete }) {
+  const [elapsedTime, setElapsedTime] = useState(0);
+  const ref = useRef()
+  
+  // Pulse animation for the counter
+  useFrame(({ clock }) => {
+    if (ref.current) {
+      const pulse = Math.sin(clock.getElapsedTime() * 2) * 0.1 + 1
+      ref.current.scale.set(pulse, pulse, pulse)
+      
+      // Rotate slightly for visual interest
+      ref.current.rotation.y = Math.sin(clock.getElapsedTime() * 0.5) * 0.1
+    }
+  })
+  
+  useEffect(() => {
+    let interval;
+    
+    if (startTime && !isComplete) {
+      // Update the timer every 100ms
+      interval = setInterval(() => {
+        setElapsedTime(Math.floor((Date.now() - startTime)));
+      }, 100);
+    }
+    
+    return () => {
+      if (interval) clearInterval(interval);
+    };
+  }, [startTime, isComplete]);
+  
+  // Format the time as mm:ss
+  const formatTime = (seconds) => {
+    const mins = Math.floor(seconds / 60000);
+    const secs = Math.floor((seconds % 60000)/1000);
+    const msecs = Math.floor((seconds % 1000)/10)
+    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}:${msecs.toString().padStart(2, '0')}`;
+  };
+  
+  return (
+    <Billboard position={[0, -4, 0]}>
+      <Text
+        color="white"
+        fontSize={1.5}
+        font="https://fonts.gstatic.com/s/raleway/v14/1Ptrg8zYS_SKggPNwK4vaqI.woff"
+        ref={ref}
+        anchorX="center"
+        anchorY="center"
+        outlineWidth={0.1}
+        outlineColor="#000000"
+      >
+        Time: {formatTime(elapsedTime)}
+      </Text>
+    </Billboard>
+  );
 }
 
 function Word({ children, ...props }) {
@@ -64,108 +179,166 @@ function Word({ children, ...props }) {
   const [hovered, setHovered] = useState(false)
   const [clicked, setClicked] = useState(false)
   
-  const over = (e) => (e.stopPropagation(), setHovered(true))
+  // Increase the hit area for better click detection
+  const hitAreaScale = 1.5;
+  
+  const over = (e) => {
+    e.stopPropagation();
+    setHovered(true);
+  }
+  
   const out = () => setHovered(false)
+  
   const click = (e) => {
-    e.stopPropagation()
-    setClicked(true)
+    e.stopPropagation();
     
-    // Trigger explosion from the center
-    if (window.triggerWordExplosion) {
-      window.triggerWordExplosion(new THREE.Vector3(0, 0, 0))
-    }
-    
-    // Vibrate device if supported (mobile haptic feedback)
-    if (navigator.vibrate) {
-      navigator.vibrate(50)
+    // Only register click if not already clicked
+    if (!clicked) {
+      setClicked(true);
+      
+      // Trigger explosion from the center
+      if (window.triggerWordExplosion) {
+        window.triggerWordExplosion(new THREE.Vector3(0, 0, 0));
+      }
+      
+      // Vibrate device if supported (mobile haptic feedback)
+      if (navigator.vibrate) {
+        navigator.vibrate(50);
+      }
+      
+      // Notify parent component that a skill was clicked
+      if (props.onSkillClick) {
+        props.onSkillClick(children);
+      }
     }
   }
   
   // Change the mouse cursor on hover
   useEffect(() => {
-    if (hovered) document.body.style.cursor = 'pointer'
-    return () => (document.body.style.cursor = 'auto')
-  }, [hovered])
+    if (hovered && !clicked) document.body.style.cursor = 'pointer';
+    else if (clicked) document.body.style.cursor = 'default';
+    return () => (document.body.style.cursor = 'auto');
+  }, [hovered, clicked]);
   
   // Create animated gradient effect similar to the span element
   useFrame(({ clock }) => {
     if (ref.current) {
-      if (hovered) {
+      if (clicked) {
+        // Keep the current gradient color when clicked
+        // No animation needed as we want to preserve the color
+      } else if (hovered) {
         // Animated gradient effect 
-        const t = (Math.sin(clock.getElapsedTime() * 0.5) + 1) * 0.5 // oscillate between 0 and 1
+        const t = (Math.sin(clock.getElapsedTime() * 0.5) + 1) * 0.5; // oscillate between 0 and 1
         
         // First half of the gradient (from -> via)
         if (t < 0.5) {
-          const mappedT = t * 2 // Scale 0-0.5 to 0-1
-          gradientColor.current.copy(GRADIENT_COLORS.from).lerp(GRADIENT_COLORS.via, mappedT)
+          const mappedT = t * 2; // Scale 0-0.5 to 0-1
+          gradientColor.current.copy(GRADIENT_COLORS.from).lerp(GRADIENT_COLORS.via, mappedT);
         } 
         // Second half of the gradient (via -> to)
         else {
-          const mappedT = (t - 0.5) * 2 // Scale 0.5-1 to 0-1
-          gradientColor.current.copy(GRADIENT_COLORS.via).lerp(GRADIENT_COLORS.to, mappedT)
+          const mappedT = (t - 0.5) * 2; // Scale 0.5-1 to 0-1
+          gradientColor.current.copy(GRADIENT_COLORS.via).lerp(GRADIENT_COLORS.to, mappedT);
         }
         
-        ref.current.material.color.lerp(gradientColor.current, 0.1)
+        ref.current.material.color.lerp(gradientColor.current, 0.1);
       } else {
         // Not hovered - fade back to white
-        ref.current.material.color.lerp(color.set('white'), 0.1)
+        ref.current.material.color.lerp(color.set('white'), 0.1);
       }
     }
-  })
+  });
   
   return (
     <Billboard {...props}>
-      <Text 
-        ref={ref} 
-        onPointerOver={over} 
-        onPointerOut={out} 
-        onClick={click}
-        {...fontProps}
-      >
-        {children}
-      </Text>
+      <group>
+        {/* Invisible hit area for better click detection */}
+        <mesh
+          onPointerOver={over}
+          onPointerOut={out}
+          onClick={click}
+          visible={false}
+        >
+          <boxGeometry args={[4 * hitAreaScale, 2 * hitAreaScale, 0.1]} />
+          <meshBasicMaterial transparent opacity={0} />
+        </mesh>
+        
+        <Text 
+          ref={ref} 
+          onPointerOver={over} 
+          onPointerOut={out} 
+          onClick={click}
+          {...fontProps}
+        >
+          {children}
+        </Text>
+      </group>
     </Billboard>
-  )
+  );
 }
 
-function Cloud({ count = 4, radius = 20, customSkills = skills }) {
+function Cloud({ count = 4, radius = 20, customSkills = skills, onSkillClick }) {
   // Create a count x count words with spherical distribution
   const words = useMemo(() => {
     const temp = []
-    const spherical = new THREE.Spherical()
-    const phiSpan = Math.PI / (count + 1)
-    const thetaSpan = (Math.PI * 2) / count
     
-    // Calculate total words needed
-    const totalPositions = count * count
+    // Use all skills provided
+    const skillsToUse = [...customSkills];
     
-    // Use skills if available, or repeat if there are fewer skills than positions
-    const skillsToUse = customSkills && customSkills.length ? 
-      (customSkills.length >= totalPositions
-        ? [...customSkills].sort(() => Math.random() - 0.5).slice(0, totalPositions)
-        : Array(totalPositions).fill().map((_, i) => customSkills[i % customSkills.length]))
-      : Array(totalPositions).fill().map((_, i) => `Skill ${i+1}`)
+    // Shuffle the skills array to randomize positions
+    const shuffledSkills = [...skillsToUse].sort(() => Math.random() - 0.5);
     
-    let wordIndex = 0
-    // Add randomization to the positions to avoid perfect grid alignment
-    for (let i = 1; i < count + 1; i++) {
-      for (let j = 0; j < count; j++) {
-        // Add some randomness to the position for more natural spacing
-        const jitter = 0.2
-        const jitteredRadius = radius * (1 + (Math.random() * jitter * 2 - jitter))
-        const jitteredPhi = phiSpan * i * (1 + (Math.random() * jitter * 0.5 - jitter * 0.25))
-        const jitteredTheta = thetaSpan * j * (1 + (Math.random() * jitter * 0.5 - jitter * 0.25))
-        
-        temp.push([
-          new THREE.Vector3().setFromSpherical(spherical.set(jitteredRadius, jitteredPhi, jitteredTheta)),
-          skillsToUse[wordIndex++]
-        ])
+    // Calculate positions for a spherical distribution
+    const numSkills = shuffledSkills.length + 1;
+    
+    // Ensure we don't divide by zero
+    if (numSkills <= 1) {
+      if (numSkills === 1) {
+        temp.push([new THREE.Vector3(0, 0, 0), shuffledSkills[0]]);
       }
+      return temp;
     }
-    return temp
-  }, [count, radius, customSkills])
+    
+    // Use the Fibonacci sphere algorithm for even distribution
+    const offset = 2.0 / numSkills;
+    const increment = Math.PI * (3.0 - Math.sqrt(5.0)); // golden angle
+    
+    for (let i = 0; i < numSkills; i++) {
+      const y = ((i * offset) - 1) + (offset / 2);
+      const r = Math.sqrt(1 - y * y);
+      const phi = i * increment;
+      
+      const x = Math.cos(phi) * r;
+      const z = Math.sin(phi) * r;
+      
+      // Add some jitter for a more natural look
+      const jitter = 0.1;
+      const jitterX = (Math.random() * 2 - 1) * jitter;
+      const jitterY = (Math.random() * 2 - 1) * jitter;
+      const jitterZ = (Math.random() * 2 - 1) * jitter;
+      
+      const position = new THREE.Vector3(
+        x * radius + jitterX * radius,
+        y * radius + jitterY * radius,
+        z * radius + jitterZ * radius
+      );
+      
+      // Add to our words array
+      temp.push([position, shuffledSkills[i]]);
+    }
+    
+    return temp;
+  }, [radius, customSkills]);
   
-  return words.map(([pos, word], index) => <Word key={index} position={pos}>{word}</Word>)
+  return words.map(([pos, word], index) => (
+    <Word 
+      key={`word-${index}-${word}`} 
+      position={pos} 
+      onSkillClick={onSkillClick}
+    >
+      {word}
+    </Word>
+  ));
 }
 
 // This component adds a slow rotation to the whole word cloud
@@ -201,61 +374,92 @@ function ZoomLimitedControls(props) {
     return () => window.removeEventListener('resize', checkMobile)
   }, [])
   
-  // Apply zoom limits and mobile constraints after the controls are initialized
-  useEffect(() => {
-    if (controlsRef.current) {
-      // Set minimum and maximum distance (zoom limits)
-      controlsRef.current.minDistance = 20;  // Closest you can zoom in
-      controlsRef.current.maxDistance = 60;  // Furthest you can zoom out
-      
-      // Disable panning on mobile devices
-      if (isMobile) {
-        controlsRef.current.noPan = true;  // Disable panning on mobile
-      }
-    }
-  }, [isMobile])
-  
-  return <TrackballControls 
-    ref={controlsRef} 
-    {...props} 
-    noPan={isMobile} // Also set the prop directly
-  />
+  return (
+    <TrackballControls
+      ref={controlsRef}
+      enabled={!isMobile} // Disable controls on mobile
+      minDistance={20}
+      maxDistance={60}
+      rotateSpeed={2}
+      zoomSpeed={1}
+      panSpeed={0.5}
+      {...props}
+    />
+  )
 }
 
-function WordCloud({ customSkills, count = 11, radius = 25 }) {
+// Main component
+function WordCloud({ customSkills, count = 0, radius = 25 }) {
+  const [clickedSkills, setClickedSkills] = useState([]);
+  const [startTime, setStartTime] = useState(null);
+  const [completionTime, setCompletionTime] = useState(null);
+  
+  // Use all available skills by default
+  const skillsToUse = useMemo(() => customSkills || skills, [customSkills]);
+  const totalSkillCount = skillsToUse.length;
+  
+  // Dynamically calculate count based on the number of skills
+  const dynamicCount = useMemo(() => {
+    if (count >= 0) return count;
+    // Calculate a reasonable grid size based on the number of skills
+    return Math.ceil(Math.sqrt(totalSkillCount));
+  }, [count, skillsToUse]);
+  
+  const handleSkillClick = (skill) => {
+    // Start the timer on first click if not already started
+    if (!startTime) {
+      setStartTime(Date.now());
+    }
+    
+    setClickedSkills(prev => {
+      if (!prev.includes(skill)) {
+        const newClickedSkills = [...prev, skill];
+        
+        // If all skills are clicked, record the completion time
+        if (newClickedSkills.length === totalSkillCount) {
+          setCompletionTime(Date.now());
+        }
+        
+        return newClickedSkills;
+      }
+      return prev;
+    });
+  };
+  
+  // Check if all skills have been clicked
+  const isComplete = clickedSkills.length === totalSkillCount;
+  
   return (
-    <div className="word-cloud-container" style={{ width: '100%', height: '500px', position: 'relative', overflow: 'hidden' }}>
-      <Canvas dpr={[1, 2]} camera={{ position: [0, 0, 40], fov: 90 }}>
-        {/* Set background color to match the webpage */}
-        <color attach="background" args={[BACKGROUND_COLOR]} />
-        
-        {/* Fog for depth perception */}
-        <fog attach="fog" args={[BACKGROUND_COLOR, 25, 65]} />
-        
-        {/* Light sources */}
+    <div className="word-cloud-container h-[600px] w-full relative">
+      <Canvas
+        camera={{ position: [0, 0, 40], fov: 75 }}
+        style={{ background: BACKGROUND_COLOR }}
+        dpr={[1, 2]} // Responsive DPR for better performance
+      >
         <ambientLight intensity={0.5} />
-        <pointLight position={[10, 10, 10]} intensity={0.8} />
-        
-        {/* Star field background */}
-        <StarField count={3000} />
-        
-        {/* Explosion manager */}
-        <ExplosionManager />
-        
+        <pointLight position={[10, 10, 10]} intensity={1} />
         <Suspense fallback={null}>
-          <RotatingContainer speed={0.1}>
-            <Cloud count={count} radius={radius} customSkills={customSkills} />
+          
+          <RotatingContainer>
+            <Cloud 
+              count={dynamicCount} 
+              radius={radius} 
+              customSkills={skillsToUse}
+              onSkillClick={handleSkillClick}
+            />
+            {clickedSkills.length > 0 && (
+              <>
+                <SkillCounter current={clickedSkills.length} total={totalSkillCount} />
+                <Timer startTime={startTime} isComplete={isComplete} />
+              </>
+            )}
           </RotatingContainer>
+          <ExplosionManager 
+            totalClicked={clickedSkills.length} 
+            totalSkills={totalSkillCount} 
+          />
         </Suspense>
-        
-        
-        {/* Use the custom controls with zoom limits */}
-        <ZoomLimitedControls 
-          rotateSpeed={2.5}
-          zoomSpeed={1.2}
-          panSpeed={0.8}
-          // No need to specify min/max distance here as they're set in the component
-        />
+        <ZoomLimitedControls />
       </Canvas>
     </div>
   )

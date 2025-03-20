@@ -7,12 +7,17 @@
   color: rgba(255, 255, 255, 0.87);
   background-color: #242424;
 
+  --highlight-color: null;
+
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  
 }
-
+::selection {
+  background: var(--highlight-color);
+}
 a {
   font-weight: 500;
   color: #646cff;

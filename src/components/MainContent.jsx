@@ -27,8 +27,12 @@ const MainContent = () => {
                 <ScrollSection id="about">
                     <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-6">About Me</h2>
                     <div className="prose dark:prose-invert max-w-none">
-                        <p className="mb-3 text-gray-500 dark:text-gray-400">Passionate about creating efficient, scalable solutions for complex problems, I specialize in React, Node.js, and modern web development technologies, with a focus on financial technology applications.</p>
-                        <p className="mb-3 text-gray-500 dark:text-gray-400">I am continuously expanding my skillset and seeking opportunities in software development, fintech, and quantitative trading, aiming to integrate advanced technology with financial markets.</p>
+                        <p className="mb-3 text-gray-500 dark:text-white">As an inspired, early career software engineer, I am constantly looking for compelling opportunities to apply my skills and contribute to meaningful projects. Adapting to new technology is par for the course, and I welcome the challenge of learning new tools and frameworks.</p>
+                        <p className="mb-3 text-gray-500 dark:text-white">I am continuously expanding my skillset and seeking new opportunities in all fields of software development, including web development, mobile development, and data analysis. One of the most rewarding aspects of my work is the ability to create something that can have a positive impact on people's lives.</p>
+                        <p className="mb-3 text-gray-500 dark:text-white">One of the sectors I have a particular passion for is Finance, and I love exploring the role software can play in the industry. AI/ML with deep forensic analysis will likely have a disruptive impact on the industry, and I am excited to be a part of that.</p>
+                        <p className="mb-3 text-gray-500 dark:text-white">I am also a big fan of 3D graphics, and I love how they can be used to represent data in a more engaging way. Like 3D Audio visualizers, or 3D representations of user interfaces in AR/VR.</p>
+                        <br />
+                        <p className="mb-3 text-gray-500 dark:text-white">Normally I would just list out my skills, but why do that when I can make them spin around in 3D instead?</p>
                     </div>
                 </ScrollSection>
 
