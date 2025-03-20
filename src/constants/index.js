@@ -1,74 +1,63 @@
-import {
-  javascript,
-  typescript,
-  html,
-  css,
-  reactjs,
-  redux,
-  tailwind,
-  nodejs,
-  mongodb,
-  git,
-  figma,
-  docker,
-  threejs,
-} from "../assets";
 
+// Skills for the 3D word cloud
+const skills = [
+  // Programming Languages
+  "JavaScript", "Python", "Java", "PHP", "SQL", "TypeScript", "HTML", "CSS", "Pinescript","QISKIT",
 
-const technologies = [
-  {
-    name: "HTML 5",
-    icon: html,
-  },
-  {
-    name: "CSS 3",
-    icon: css,
-  },
-  {
-    name: "JavaScript",
-    icon: javascript,
-  },
-  {
-    name: "TypeScript",
-    icon: typescript,
-  },
-  {
-    name: "React JS",
-    icon: reactjs,
-  },
-  {
-    name: "Redux Toolkit",
-    icon: redux,
-  },
-  {
-    name: "Tailwind CSS",
-    icon: tailwind,
-  },
-  {
-    name: "Node JS",
-    icon: nodejs,
-  },
-  {
-    name: "MongoDB",
-    icon: mongodb,
-  },
-  {
-    name: "Three JS",
-    icon: threejs,
-  },
-  {
-    name: "git",
-    icon: git,
-  },
-  {
-    name: "figma",
-    icon: figma,
-  },
-  {
-    name: "docker",
-    icon: docker,
-  },
+  // Frameworks & Libraries
+  "React", "Node.js", "Express", "Vue.js", "Angular","Django", "Flask",
+  "jQuery", "Bootstrap", "Tailwind CSS", "Three.js", "D3.js", "TensorFlow",
+  "Redux", "Next.js", "Spring Boot", "ASP.NET",
+
+  // Tools & Technologies
+  "Git", "Docker", "AWS", "Azure", "GraphQL", "RESTful APIs", "Webpack", "Vite",
+  "npm", "yarn", "Babel", "ESLint", "Jest", "Cypress", "Blender", "Canva", "Miro", "Figma",
+
+  // Methodologies
+  "Agile", "Scrum", "TDD", "CI/CD", "DevOps",
+
+  // Industry Specific
+  "FinTech", "Algorithmic Trading", "Data Analysis", "Automation", "Blockchain", "Web3", "AI/ML"
 ];
 
+// Services/expertise cards for the main content
+const serviceCards = [
+  {
+    id: 1,
+    title: "Web Development",
+    description: "Building interactive and responsive front-end interfaces with React and robust backend systems with Node.js and PHP.",
+    icon: "code", // Could be used for an icon class if you add icons later
+  },
+  {
+    id: 2,
+    title: "Trading Systems",
+    description: "Developing algorithmic trading systems and financial analysis tools with a focus on performance and reliability.",
+    icon: "chart-line",
+  },
+  {
+    id: 3,
+    title: "Data Visualization",
+    description: "Creating interactive data visualizations and dashboards using D3.js, Three.js, and other modern visualization libraries.",
+    icon: "chart-bar",
+  },
+  {
+    id: 4,
+    title: "Cloud Solutions",
+    description: "Designing and implementing scalable cloud-based applications on AWS, Azure, and other cloud platforms.",
+    icon: "cloud",
+  },
+  {
+    id: 5,
+    title: "AI Integration",
+    description: "Incorporating artificial intelligence and machine learning capabilities into web and mobile applications.",
+    icon: "brain",
+  },
+  {
+    id: 6,
+    title: "FinTech Development",
+    description: "Specialized development for financial technology applications with a focus on security and compliance.",
+    icon: "dollar-sign",
+  }
+];
 
-export {technologies};
+export { skills, serviceCards };

@@ -1,0 +1,57 @@
+.hero-three-container {
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  position: fixed;
+  overflow: hidden;
+  background-color: #242424;
+  transition: all 0.5s ease-in-out;
+  will-change: transform, opacity;
+}
+
+/* Fullscreen state - when at the top of the page */
+.hero-three-container.fullscreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 100;
+  transition: all 0.3s ease-in-out;
+}
+
+/* Scrolled state - when scrolled down */
+.hero-three-container.scrolled {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: 100;
+  transition: all 0.3s ease-in-out;
+}
+
+/* Canvas should take up full container height */
+.hero-three-container canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Hide scrollbar but allow scrolling */
+::-webkit-scrollbar {
+  width: 0;
+  background: transparent;
+}
+
+body {
+  scrollbar-width: none;
+}
+
+/* Optimize for mobile */
+@media (max-width: 768px) {
+  .hero-three-container {
+    height: 80vh;
+  }
+}

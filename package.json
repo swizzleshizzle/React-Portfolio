@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"
@@ -13,6 +13,8 @@
     "@tailwindcss/vite": "^4.0.12",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-helmet": "^6.1.0",
+    "react-intersection-observer": "^9.16.0",
     "three": "^0.174.0",
     "vanta": "^0.5.24"
   },
@@ -29,7 +31,7 @@
     "eslint": "^9.21.0",
     "eslint-plugin-react-hooks": "^5.1.0",
     "eslint-plugin-react-refresh": "^0.4.19",
-    "framer-motion": "^12.4.10",
+    "framer-motion": "^12.5.0",
     "globals": "^15.15.0",
     "maath": "^0.10.8",
     "react-router-dom": "^7.3.0",

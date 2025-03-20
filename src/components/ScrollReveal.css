@@ -1,0 +1,113 @@
+/* ScrollReveal animations */
+.scroll-section {
+  min-height: auto; /* Changed from 100vh to auto */
+  padding: 4rem 0; /* Add padding instead of using full viewport height */
+  position: relative;
+  opacity: 0;
+  transition: opacity 0.8s ease-in-out, transform 0.8s ease-in-out;
+  transform: translateY(50px);
+}
+
+.scroll-section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Only the hero section should be full height */
+.scroll-section.hero {
+  min-height: 100vh;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+
+/* Special case for THREE.js hero section */
+.scroll-section.hero-three-section {
+  opacity: 1 !important;
+  transform: none !important;
+  transition: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  min-height: 100vh;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+/* When the hero section has been scrolled past */
+.scroll-section.hero-three-section.visible {
+  height: 100vh;
+}
+
+/* Don't apply fade-in animation to THREE.js hero component */
+.scroll-section.hero {
+  opacity: 1;
+  transform: none;
+  transition: none;
+}
+
+.scroll-section.hero h1 {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+}
+
+.scroll-smooth {
+  scroll-behavior: smooth;
+}
+
+/* For staggered child animations */
+.stagger-children > * {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+}
+
+.stagger-children.visible > *:nth-child(1) { transition-delay: 0.1s; }
+.stagger-children.visible > *:nth-child(2) { transition-delay: 0.2s; }
+.stagger-children.visible > *:nth-child(3) { transition-delay: 0.3s; }
+.stagger-children.visible > *:nth-child(4) { transition-delay: 0.4s; }
+.stagger-children.visible > *:nth-child(5) { transition-delay: 0.5s; }
+.stagger-children.visible > *:nth-child(6) { transition-delay: 0.6s; }
+
+.stagger-children.visible > * {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Ensure the THREE.js canvas doesn't get affected by stagger animations */
+.hero-three-container {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+/* Scroll indicator for non-THREE.js hero */
+.scroll-indicator {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 2rem;
+  cursor: pointer;
+  animation: bounce 2s infinite;
+}
+
+/* Hide scroll indicator in THREE.js hero since it has its own */
+.hero-three-container + .scroll-indicator {
+  display: none;
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-20px);
+  }
+  60% {
+    transform: translateY(-10px);
+  }
+}

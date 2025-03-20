@@ -1,0 +1,18 @@
+.word-cloud-container {
+  width: 100%;
+  height: 500px;
+  margin: 2rem 0;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: rgba(36, 36, 36, 0);
+  position: relative;
+}
+
+/* Make sure we have a proper stacking context */
+.word-cloud-container canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
