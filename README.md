@@ -5,6 +5,7 @@
 A modern, responsive portfolio website built with React and Three.js, featuring immersive 3D animations, interactive elements, and a sleek design to showcase professional skills and projects.
 
 ![Portfolio Preview](public/preview.png)
+![Hero Section Preview](public/hero-preview.png)
 
 ## ✨ Features
 
