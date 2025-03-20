@@ -15,6 +15,21 @@
   -moz-osx-font-smoothing: grayscale;
   
 }
+/* Modal animation */
+@keyframes modal-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  70% {
+    opacity: 1;
+    transform: scale(1.02);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
 ::selection {
   background: var(--highlight-color);
 }

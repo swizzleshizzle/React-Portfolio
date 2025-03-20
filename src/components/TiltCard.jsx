@@ -6,10 +6,18 @@ const TiltCard = ({ title, description, icon, children }) => {
     const [rotation, setRotation] = useState({ x: 0, y: 0 });
     const [position, setPosition] = useState({ x: 0, y: 0 });
     const [isHovered, setIsHovered] = useState(false);
+    const [lastMousePosition, setLastMousePosition] = useState(null);
+    const [shouldReset, setShouldReset] = useState(false);
+    const lastInteractionTimeRef = useRef(Date.now());
+    const animationFrameRef = useRef(null);
     
     // Handle mouse move to create the tilt effect
     const handleMouseMove = (e) => {
         if (!cardRef.current) return;
+        
+        // Update last interaction time
+        lastInteractionTimeRef.current = Date.now();
+        setShouldReset(false);
         
         const card = cardRef.current;
         const rect = card.getBoundingClientRect();
@@ -19,6 +27,9 @@ const TiltCard = ({ title, description, icon, children }) => {
         const centerY = rect.top + rect.height / 2;
         const mouseX = e.clientX - centerX;
         const mouseY = e.clientY - centerY;
+        
+        // Save last mouse position
+        setLastMousePosition({ x: mouseX, y: mouseY });
         
         // Calculate rotation (stronger when closer to edges)
         const rotateX = (mouseY / (rect.height / 2)) * -10; // Inverted Y for natural tilt
@@ -33,11 +44,73 @@ const TiltCard = ({ title, description, icon, children }) => {
         setPosition({ x: posX, y: posY });
     };
     
-    // Smooth reset when mouse leaves
+    // Handle mouse enter
+    const handleMouseEnter = () => {
+        setIsHovered(true);
+        lastInteractionTimeRef.current = Date.now();
+        setShouldReset(false);
+        
+        // If we have a last known position, restore it
+        if (lastMousePosition && cardRef.current) {
+            const card = cardRef.current;
+            const rect = card.getBoundingClientRect();
+            
+            const { x: mouseX, y: mouseY } = lastMousePosition;
+            
+            // Calculate rotation based on last known position
+            const rotateX = (mouseY / (rect.height / 2)) * -10;
+            const rotateY = (mouseX / (rect.width / 2)) * 10;
+            
+            // Calculate position based on last known position
+            const posX = (mouseX / rect.width) * 5;
+            const posY = (mouseY / rect.height) * 5;
+            
+            // Apply rotation and position
+            setRotation({ x: rotateX, y: rotateY });
+            setPosition({ x: posX, y: posY });
+        }
+    };
+    
+    // Handle mouse leave
     const handleMouseLeave = () => {
         setIsHovered(false);
+        lastInteractionTimeRef.current = Date.now();
+    };
+    
+    // Animation loop to check for inactivity and handle reset
+    useEffect(() => {
+        const checkInactivity = () => {
+            const now = Date.now();
+            const timeSinceLastInteraction = now - lastInteractionTimeRef.current;
+            
+            // If card is tilted and inactive for 2 seconds and not being hovered
+            const hasTilt = Math.abs(rotation.x) > 0.1 || Math.abs(rotation.y) > 0.1 || 
+                          Math.abs(position.x) > 0.1 || Math.abs(position.y) > 0.1;
+                          
+            if (hasTilt && timeSinceLastInteraction > 200 && !isHovered && !shouldReset) {
+                // Start reset animation
+                setShouldReset(true);
+            }
+            
+            // Continue the animation loop
+            animationFrameRef.current = requestAnimationFrame(checkInactivity);
+        };
         
-        // Animate back to flat position
+        // Start the animation loop
+        animationFrameRef.current = requestAnimationFrame(checkInactivity);
+        
+        // Clean up
+        return () => {
+            if (animationFrameRef.current) {
+                cancelAnimationFrame(animationFrameRef.current);
+            }
+        };
+    }, [rotation.x, rotation.y, position.x, position.y, isHovered, shouldReset]);
+    
+    // Handle the reset animation when shouldReset is true
+    useEffect(() => {
+        if (!shouldReset) return;
+        
         const resetAnimation = () => {
             setRotation(prev => ({
                 x: prev.x * 0.9,
@@ -49,18 +122,29 @@ const TiltCard = ({ title, description, icon, children }) => {
                 y: prev.y * 0.9
             }));
             
-            // Continue animation until nearly flat
-            if (Math.abs(rotation.x) > 0.1 || Math.abs(rotation.y) > 0.1 || 
-                Math.abs(position.x) > 0.1 || Math.abs(position.y) > 0.1) {
-                requestAnimationFrame(resetAnimation);
-            } else {
+            // Check if animation is complete
+            if (Math.abs(rotation.x) <= 0.1 && Math.abs(rotation.y) <= 0.1 && 
+                Math.abs(position.x) <= 0.1 && Math.abs(position.y) <= 0.1) {
+                // Animation complete, set to exact zero
                 setRotation({ x: 0, y: 0 });
                 setPosition({ x: 0, y: 0 });
+                setShouldReset(false);
+            } else {
+                // Continue animation
+                animationFrameRef.current = requestAnimationFrame(resetAnimation);
             }
         };
         
-        requestAnimationFrame(resetAnimation);
-    };
+        // Start reset animation
+        animationFrameRef.current = requestAnimationFrame(resetAnimation);
+        
+        // Clean up
+        return () => {
+            if (animationFrameRef.current) {
+                cancelAnimationFrame(animationFrameRef.current);
+            }
+        };
+    }, [shouldReset, rotation.x, rotation.y, position.x, position.y]);
     
     // Shadow and glow effects based on tilt
     const calculateShadow = () => {
@@ -74,29 +158,43 @@ const TiltCard = ({ title, description, icon, children }) => {
     return (
         <div
             ref={cardRef}
-            className="relative block p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 cursor-pointer overflow-hidden transition-all duration-200 ease-out transform-gpu"
+            className="relative block p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 cursor-pointer overflow-hidden transform-gpu"
             style={{
                 transform: `perspective(1200px) rotateX(${rotation.x}deg) rotateY(${rotation.y}deg) translateX(${position.x}px) translateY(${position.y}px)`,
                 boxShadow: calculateShadow(),
-                transition: isHovered ? 'none' : 'all 0.5s ease-out'
+                transition: 'box-shadow 0.3s ease-out'
             }}
             onMouseMove={handleMouseMove}
-            onMouseEnter={() => setIsHovered(true)}
+            onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
         >
             {/* Glowing gradient overlay */}
             <div 
-                className="absolute inset-0 opacity-0 transition-opacity duration-300 ease-in-out rounded-lg"
+                className="absolute inset-0 transition-opacity duration-300 ease-in-out rounded-lg pointer-events-none"
                 style={{ 
                     background: 'linear-gradient(135deg, rgba(124, 58, 237, 0.2), rgba(56, 189, 248, 0.2))',
-                    opacity: isHovered ? 0.6 : 0,
-                    transform: `perspective(1200px) rotateX(${rotation.x}deg) rotateY(${rotation.y}deg)`
+                    opacity: isHovered ? 0.6 : 0.2,
+                    transform: `perspective(1200px) rotateX(${rotation.x}deg) rotateY(${rotation.y}deg)`,
+                    zIndex: 5 // Lower z-index for the overlay
                 }}
             />
             
             {/* Content */}
-            {children ? children : (
+            {children ? (
+                <div className="relative" style={{ zIndex: 10 }}>
+                    {children}
+                </div>
+            ) : (
                 <>
+                    {icon && (
+                        <div className="flex justify-center mb-4 relative z-10">
+                            <img 
+                                src={icon} 
+                                alt={`${title} icon`} 
+                                className="w-16 h-16 object-contain"
+                            />
+                        </div>
+                    )}
                     <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white relative z-10">
                         {title}
                     </h5>

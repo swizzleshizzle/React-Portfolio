@@ -161,11 +161,11 @@ function Spaceship({ shipType = 0, scale = 0.005, speed = 1.0, direction = 'left
 
   // Get bounds for respawning
   const sceneBounds = {
-    xMin: -40,
-    xMax: 40,
+    xMin: -60,
+    xMax: 60,
     yMin: -20,
     yMax: 20,
-    zMin: -20,
+    zMin: -40,
     zMax: 10  // Keep ships somewhat behind the text (which is at z=0)
   }
 

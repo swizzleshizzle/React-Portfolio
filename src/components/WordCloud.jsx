@@ -289,7 +289,7 @@ function Cloud({ count = 4, radius = 20, customSkills = skills, onSkillClick }) 
     const shuffledSkills = [...skillsToUse].sort(() => Math.random() - 0.5);
     
     // Calculate positions for a spherical distribution
-    const numSkills = shuffledSkills.length + 1;
+    const numSkills = shuffledSkills.length;
     
     // Ensure we don't divide by zero
     if (numSkills <= 1) {
@@ -400,7 +400,7 @@ function WordCloud({ customSkills, count = 0, radius = 25 }) {
   
   // Dynamically calculate count based on the number of skills
   const dynamicCount = useMemo(() => {
-    if (count >= 0) return count;
+    if (count > 0) return count;
     // Calculate a reasonable grid size based on the number of skills
     return Math.ceil(Math.sqrt(totalSkillCount));
   }, [count, skillsToUse]);
@@ -432,7 +432,7 @@ function WordCloud({ customSkills, count = 0, radius = 25 }) {
   return (
     <div className="word-cloud-container h-[600px] w-full relative">
       <Canvas
-        camera={{ position: [0, 0, 40], fov: 75 }}
+        camera={{ position: [0, 0, 60], fov: 75 }}
         style={{ background: BACKGROUND_COLOR }}
         dpr={[1, 2]} // Responsive DPR for better performance
       >
