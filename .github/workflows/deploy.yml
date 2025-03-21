@@ -24,6 +24,10 @@ jobs:
 
       - name: Build project
         run: npm run build
+        env:
+          REACT_APP_EMAILJS_USERID: ${{ secrets.EMAILJS_USERID }}
+          REACT_APP_EMAILJS_TEMPLATEID: ${{ secrets.EMAILJS_TEMPLATEID }}
+          REACT_APP_EMAILJS_SERVICEID: ${{ secrets.EMAILJS_SERVICEID }}
 
       - name: Set production environment variables
         run: |
