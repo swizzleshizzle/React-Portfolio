@@ -33,4 +33,13 @@ src/config/emailjs-template-example.html
 src/docs/EMAILJS_SETUP.md
 docs/EMAILJS_SETUP.md
 
+# deployment scripts
+
+
+git-deploy.bat
+git-deploy.sh
+
+# test build scripts
+test-build.bat
+test-build.sh
 
