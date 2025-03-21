@@ -42,29 +42,20 @@ jobs:
         
       - name: Build project
         run: npm run build
-        
+      
+      - name: Set up SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H "${{ secrets.REMOTE_HOST }}" >> ~/.ssh/known_hosts
+          ssh-keyscan -H "${{ secrets.REMOTE_HOST_STAGING }}" >> ~/.ssh/known_hosts
         
       - name: Deploy to production (main branch)
         if: github.ref == 'refs/heads/main'
-        uses: easingthemes/ssh-deploy@main
-        with:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          ARGS: "-avz --delete"
-          SOURCE: "dist/"
-          HOST: ${{ secrets.REMOTE_HOST }}
-          USERNAME: ${{ secrets.REMOTE_USER }}
-          REMOTE_PATH: ${{ secrets.REMOTE_PATH }}
-          
-      - name: Deploy to staging (dev branch)
-        if: github.ref == 'refs/heads/dev'
-        uses: easingthemes/ssh-deploy@main
-        with:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          ARGS: "-avz --delete"
-          SOURCE: "dist/"
-          HOST: ${{ secrets.REMOTE_HOST_STAGING }}
-          USERNAME: ${{ secrets.REMOTE_USER_STAGING }}
-          REMOTE_PATH: ${{ secrets.REMOTE_PATH_STAGING }}
+        run: |
+          rsync -avz --delete dist/ ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }}:${{ secrets.REMOTE_PATH }}
+          echo "Deployed to production environment"
           
       - name: Notify deployment status
         run: |
