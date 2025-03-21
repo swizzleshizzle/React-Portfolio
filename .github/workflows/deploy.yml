@@ -1,63 +1,58 @@
-name: Deploy Portfolio Website
+name: Deploy React Portfolio
 
 on:
   push:
-    branches: [ main, dev ]  # Trigger on pushes to main and dev branches
-  pull_request:
-    branches: [ main ]       # Trigger on PRs to main branch
-  workflow_dispatch:         # Allow manual triggering
+    branches: [ main ]
+  workflow_dispatch:
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-        
+
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
           cache: 'npm'
-          
+
       - name: Install dependencies
         run: npm install --legacy-peer-deps
-        
+
       - name: Build project
         run: npm run build
-        
-      - name: Deploy to production (main branch)
-        if: github.ref == 'refs/heads/main'
-        # Replace this with your deployment method
-        # Example using SSH deploy:
-        # uses: easingthemes/ssh-deploy@main
-        # with:
-        #   SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-        #   ARGS: "-avz --delete"
-        #   SOURCE: "dist/"
-        #   REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
-        #   REMOTE_USER: ${{ secrets.REMOTE_USER }}
-        #   TARGET: ${{ secrets.REMOTE_PATH }}
+
+      - name: Set production environment variables
         run: |
-          echo "Deploying to production server..."
-          # Add your deployment commands here
-          
-      - name: Deploy to staging (dev branch)
-        if: github.ref == 'refs/heads/dev'
-        # Replace this with your staging deployment method
+          echo "DEPLOY_ENV=production" >> $GITHUB_ENV
+          echo "HOST=${{ secrets.REMOTE_HOST }}" >> $GITHUB_ENV
+          echo "USER=${{ secrets.REMOTE_USER }}" >> $GITHUB_ENV
+          echo "TARGET_PATH=${{ secrets.REMOTE_PATH }}" >> $GITHUB_ENV
+
+      - name: Debug environment variables
         run: |
-          echo "Deploying to staging server..."
-          # Add your staging deployment commands here
-          
-      - name: Notify on success
-        if: success()
+          echo "Deploying to $DEPLOY_ENV"
+          echo "Host: $HOST"
+          echo "User: $USER"
+          echo "Path: $TARGET_PATH"
+
+      - name: Setup SSH manually
         run: |
-          echo "Deployment successful!"
-          # Add notification commands here (e.g., Slack, Discord, email)
-          
-      - name: Notify on failure
-        if: failure()
+          eval "$(ssh-agent -s)"
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-add ~/.ssh/id_rsa
+          ssh-keyscan -H "$HOST" >> ~/.ssh/known_hosts
+
+      - name: Test SSH connection
         run: |
-          echo "Deployment failed!"
-          # Add failure notification commands here
+          ssh -o StrictHostKeyChecking=no "$USER@$HOST" "echo ✅ SSH connection successful"
+
+      - name: Deploy via rsync
+        run: |
+          rsync -avz --delete dist/ "$USER@$HOST:$TARGET_PATH"
+       

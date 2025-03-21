@@ -1,0 +1,80 @@
+/* Footer styles */
+.footer-container {
+  position: relative;
+  z-index: 50;
+  margin-top: 2rem;
+  width: 100%;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.attribution-section {
+  margin-top: 1rem;
+}
+
+.attribution-category {
+  transition: all 0.3s ease;
+}
+
+.attribution-category:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.attribution-items {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s ease;
+  opacity: 0;
+}
+
+.attribution-items.expanded {
+  max-height: 500px;
+  opacity: 1;
+  transition: max-height 0.5s ease, opacity 0.3s ease 0.2s;
+}
+
+.attribution-item {
+  padding: 0.5rem 0;
+  transition: transform 0.2s ease;
+}
+
+.attribution-item:hover {
+  transform: translateX(5px);
+}
+
+/* Make sure footer is visible on all screen sizes */
+@media (max-width: 768px) {
+  .footer-container {
+    margin-top: 4rem;
+    padding-bottom: 2rem;
+    width: calc(100% - 2rem);
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+/* iPad specific adjustments */
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
+  .footer-container {
+    width: calc(100% - 2rem);
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 1rem;
+  }
+}
+
+/* iPhone specific adjustments */
+@media only screen and (max-device-width: 480px) {
+  .footer-container {
+    width: calc(100% - 2rem);
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 4rem; /* Extra space for social links */
+  }
+}
+
+/* Fix for social links overlap */
+@media only screen and (max-width: 768px) {
+  .footer-container {
+    margin-bottom: 4rem; /* Provide space for social links */
+  }
+}

@@ -84,7 +84,7 @@ const projects = [
     title: "Personal Portfolio Webpage",
     description: "The website youre looking at! I really wanted to experiment and test my skills with this project using modern React frameworks and best practices, here we are!",
     image: portfolio,
-    technologies: ["React", "Three.js", "TailwindCSS", "Framer Motion", "Vite"],
+    technologies: ["React", "Three.js", "TailwindCSS", "Framer Motion"],
     link: "https://github.com/swizzleshizzle/React-Portfolio/",
     longDescription: "This portfolio website represents my journey into modern web development, combining cutting-edge technologies to create an engaging and interactive experience. I built it from scratch using React and Vite for lightning-fast performance, while leveraging Three.js to create immersive 3D elements that make the site stand out. The responsive design is powered by TailwindCSS, allowing for a clean, professional appearance across all devices.\n\nThe site features interactive elements like the 3D word cloud of skills, tilt-effect cards that respond to mouse movement, and this modal system for project details. I've implemented smooth animations using Framer Motion to enhance the user experience, and organized the codebase with best practices for maintainability and scalability.\n\nThis project wasn't just about showcasing my work—it was an opportunity to push my technical boundaries and create something that reflects both my skills and personality as a developer. The entire codebase is available on GitHub, demonstrating my commitment to clean, well-structured code and modern development practices."
   }
@@ -145,4 +145,89 @@ const socialLinks = [
   }
 ];
 
-export { skills, serviceCards, projects, experiences, socialLinks };
+// Attributions for 3D models, icons, and other assets
+const attributions = [
+  {
+    category: "3D Models",
+    items: [
+      {
+        name: "Spaceship 1",
+        author: "Liz Reddington",
+        license: "CC-BY 4.0",
+        url: "https://poly.pizza/m/6eRDOiTxvOo"
+      },
+      {
+        name: "Spaceship 2",
+        author: "Liz Reddington",
+        license: "CC-BY 4.0",
+        url: "https://poly.pizza/m/1GMsmYGqJad"
+      },
+      {
+        name: "Spaceship 3",
+        author: "Liz Reddington",
+        license: "CC-BY 4.0",
+        url: "https://poly.pizza/m/647DTebhyBD"
+      },
+      {
+        name: "Spaceship 4",
+        author: "Liz Reddington",
+        license: "CC-BY 4.0",
+        url: "https://poly.pizza/m/5nWeu4IQXVX"
+      },
+      {
+        name: "Spaceship 5",
+        author: "Liz Reddington",
+        license: "CC-BY 4.0",
+        url: "https://poly.pizza/m/dKFQSZCHQWf"
+      }
+    ]
+  },
+  {
+    category: "Icons",
+    items: [
+      {
+        name: "AI, Chart, and Cloud Icons",
+        author: "Graficon",
+        license: "Flaticon License",
+        url: "https://www.flaticon.com/free-icons/"
+      },
+      {
+        name: "Social Media Icons",
+        author: "Font Awesome",
+        license: "Font Awesome Free License",
+        url: "https://fontawesome.com/"
+      }
+    ]
+  },
+  {
+    category: "Libraries & Frameworks",
+    items: [
+      {
+        name: "Three.js",
+        author: "mrdoob",
+        license: "MIT",
+        url: "https://threejs.org/"
+      },
+      {
+        name: "React Three Fiber",
+        author: "Poimandres",
+        license: "MIT",
+        url: "https://github.com/pmndrs/react-three-fiber"
+      },
+      {
+        name: "React",
+        author: "Facebook",
+        license: "MIT",
+        url: "https://reactjs.org/"
+      },
+      {
+        name: "Tailwind CSS",
+        author: "Tailwind Labs",
+        license: "MIT",
+        url: "https://tailwindcss.com/"
+      }
+    ]
+  }
+];
+
+export { skills, serviceCards, projects, experiences, socialLinks, attributions };

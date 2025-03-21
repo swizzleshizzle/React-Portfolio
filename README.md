@@ -73,38 +73,39 @@ yarn build
 
 The build artifacts will be stored in the `dist/` directory.
 
-## 📤 Deployment
+## 🚀 Deployment
 
-This project includes deployment scripts and server configurations to help you deploy your portfolio to a web server.
+### Manual Deployment
 
-### Quick Deployment
+1. Build the project:
+   ```bash
+   npm run build
+   ```
 
-Use the included deployment scripts:
+2. Deploy the contents of the `dist` directory to your web server.
 
-**Windows:**
-```bash
-deploy.bat -b main
-```
+### GitHub Actions Deployment
 
-**Unix/Linux/macOS:**
-```bash
-./deploy.sh -b main
-```
+This project includes a GitHub Actions workflow for automated deployment. To set it up:
 
-These scripts will:
-- Check out the specified branch (default: main)
-- Pull the latest changes
-- Install dependencies
-- Build the project
+1. Go to your GitHub repository settings and navigate to "Secrets and variables" > "Actions"
 
-### Server Configurations
+2. Add the following secrets:
 
-The repository includes:
-- `.htaccess` for Apache servers
-- `nginx.conf` for Nginx servers
-- GitHub Actions workflow for CI/CD
+   **For Production (main branch):**
+   - `SSH_PRIVATE_KEY`: Your SSH private key for server access
+   - `REMOTE_HOST`: Your production server hostname or IP
+   - `REMOTE_USER`: SSH username for your production server
+   - `REMOTE_PATH`: Path to your web directory on the production server
 
-For detailed deployment instructions, see the [Deployment Guide](docs/DEPLOYMENT.md).
+   **For Staging (dev branch):**
+   - `REMOTE_HOST_STAGING`: Your staging server hostname or IP
+   - `REMOTE_USER_STAGING`: SSH username for your staging server
+   - `REMOTE_PATH_STAGING`: Path to your web directory on the staging server
+
+3. Push to the main branch to trigger deployment to production, or to the dev branch to deploy to staging.
+
+For more detailed deployment instructions, see the [Deployment Guide](docs/DEPLOYMENT.md).
 
 ## 📁 Project Structure
 

@@ -60,6 +60,7 @@ const MainContent = () => {
                         <p className="mb-3 text-gray-500 dark:text-white" style={{ color: '#cfdbe8' }}>I am also a big fan of 3D graphics, and I love how they can be used to represent data in a more engaging way. Like 3D Audio visualizers, or 3D representations of user interfaces in AR/VR.</p>
                         <br />
                         <p className="mb-3 text-gray-500 dark:text-white" style={{ color: '#cfdbe8' }}>Normally I would just list out my skills, but why do that when I can make them spin around in 3D instead?</p>
+                        <p className="mb-3 text-gray-500 dark:text-white flex justify-center" style={{ color: '#cfdbe8' }}>(Pssss... Click one!)</p>
                     </div>
                 </ScrollSection>
 
