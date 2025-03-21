@@ -6,5 +6,5 @@ export const EMAILJS_CONFIG = {
   publicKey: process.env.REACT_APP_EMAILJS_PUBLICKEY, // Your EmailJS public key
   
   // The email address that will receive the contact form submissions
-  recipientEmail: 'michael.greene.pro@gmail.com'
+  recipientEmail: process.env.REACT_APP_EMAILJS_EMAIL
 };
