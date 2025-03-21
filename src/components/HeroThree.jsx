@@ -395,6 +395,84 @@ function LoadingFallback() {
 // Scene
 function HeroScene({ scrollProgress = 0 }) {
   const mobileCheck = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+  const orbitControlsRef = useRef(null)
+  
+  // Handle Y-axis drag to scroll on mobile and wheel events on desktop
+  useEffect(() => {
+    if (!orbitControlsRef.current) return;
+    
+    // Function to scroll to the About section
+    const scrollToAboutSection = () => {
+      const aboutSection = document.getElementById('about');
+      if (aboutSection) {
+        aboutSection.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        // Fallback if section not found
+        window.scrollTo({
+          top: window.innerHeight,
+          behavior: 'smooth'
+        });
+      }
+    };
+    
+    // Get the canvas element
+    const canvas = document.querySelector('.hero-three-container canvas');
+    if (canvas) {
+      if (mobileCheck) {
+        // For mobile: Simple touch handlers to navigate to next section
+        let touchStartY = 0;
+        let touchStartTime = 0;
+        
+        const handleTouchStart = (e) => {
+          touchStartY = e.touches[0].clientY;
+          touchStartTime = Date.now();
+        };
+        
+        const handleTouchMove = (e) => {
+          // Only handle if we're at the top of the page (in hero section)
+          if (window.scrollY > 50) return;
+          
+          const touchY = e.touches[0].clientY;
+          const deltaY = touchStartY - touchY;
+          const timeElapsed = Date.now() - touchStartTime;
+          
+          // If significant downward swipe detected, navigate to About section
+          if (deltaY > 30 && timeElapsed < 300) {
+            e.preventDefault();
+            scrollToAboutSection();
+          }
+        };
+        
+        canvas.addEventListener('touchstart', handleTouchStart, { passive: true });
+        canvas.addEventListener('touchmove', handleTouchMove, { passive: false });
+        
+        // Add to cleanup
+        return () => {
+          canvas.removeEventListener('touchstart', handleTouchStart);
+          canvas.removeEventListener('touchmove', handleTouchMove);
+        };
+      } else {
+        // For desktop: Simple wheel handler
+        const handleWheel = (e) => {
+          // Only handle if we're at the top of the page (in hero section)
+          if (window.scrollY > 50) return;
+          
+          // If scrolling down, navigate to About section
+          if (e.deltaY > 0) {
+            e.preventDefault();
+            scrollToAboutSection();
+          }
+        };
+        
+        canvas.addEventListener('wheel', handleWheel, { passive: false });
+        
+        return () => {
+          canvas.removeEventListener('wheel', handleWheel);
+        };
+      }
+    }
+  }, [mobileCheck]);
+  
   // Define ship configurations
   const shipConfigs = React.useMemo(() => {
     const directions = ['left-to-right', 'right-to-left', 'top-to-bottom', 'bottom-to-top', 'random']
@@ -448,6 +526,7 @@ function HeroScene({ scrollProgress = 0 }) {
         </group>
 
         <OrbitControls
+          ref={orbitControlsRef}
           enableZoom={false}
           enablePan={false}
           minPolarAngle={Math.PI / 2}
@@ -495,10 +574,11 @@ function HeroScene({ scrollProgress = 0 }) {
         </group>
 
         <OrbitControls
+          ref={orbitControlsRef}
           enableZoom={false}
           enablePan={false}
-          minPolarAngle={Math.PI / 2}
-          maxPolarAngle={Math.PI / 2}
+          minPolarAngle={0}
+          maxPolarAngle={Math.PI}
           rotateSpeed={0.5}
         />
       </>
