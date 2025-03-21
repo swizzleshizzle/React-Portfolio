@@ -66,5 +66,3 @@ jobs:
       - name: Deploy via rsync
         run: |
           rsync -e "ssh -p 21098 -o StrictHostKeyChecking=no" -avz --delete dist/ "$USER@$HOST:$TARGET_PATH"
-
-       

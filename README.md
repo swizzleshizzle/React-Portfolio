@@ -51,7 +51,15 @@ A modern, responsive portfolio website built with React and Three.js, featuring 
    - Sign up at [EmailJS](https://www.emailjs.com/)
    - Create a new service (e.g., Gmail, Outlook)
    - Create an email template with variables: {{name}}, {{email}}, {{company}}, and {{message}}
-   - Update the configuration in `src/config/emailjs.js` with your service ID, template ID, and public key
+   - Create a `.env` file in the project root with the following environment variables:
+     ```
+     VITE_EMAILJS_SERVICEID=your_service_id
+     VITE_EMAILJS_TEMPLATEID=your_template_id
+     VITE_EMAILJS_PUBLICKEY=your_public_key
+     VITE_APP_EMAILJS_EMAIL=your_recipient_email
+     ```
+   - These variables are used in `src/config/emailjs.js` and will be automatically loaded by Vite
+   - Make sure `.env` is in your `.gitignore` to keep your credentials secure
 
 4. Start the development server:
    ```bash
@@ -97,12 +105,24 @@ This project includes a GitHub Actions workflow for automated deployment. To set
    - `REMOTE_USER`: SSH username for your production server
    - `REMOTE_PATH`: Path to your web directory on the production server
 
-   **For Staging (dev branch):**
-   - `REMOTE_HOST_STAGING`: Your staging server hostname or IP
-   - `REMOTE_USER_STAGING`: SSH username for your staging server
-   - `REMOTE_PATH_STAGING`: Path to your web directory on the staging server
+   **For EmailJS Integration:**
+   - `VITE_EMAILJS_SERVICEID`: Your EmailJS service ID
+   - `VITE_EMAILJS_TEMPLATEID`: Your EmailJS template ID
+   - `VITE_EMAILJS_PUBLICKEY`: Your EmailJS public key
+   - `VITE_APP_EMAILJS_EMAIL`: Your recipient email address
 
-3. Push to the main branch to trigger deployment to production, or to the dev branch to deploy to staging.
+3. Update the GitHub workflow file (`.github/workflows/deploy.yml`) to include these environment variables:
+   ```yaml
+   - name: Build project
+     run: npm run build
+     env:
+       VITE_EMAILJS_SERVICEID: ${{ secrets.VITE_EMAILJS_SERVICEID }}
+       VITE_EMAILJS_TEMPLATEID: ${{ secrets.VITE_EMAILJS_TEMPLATEID }}
+       VITE_EMAILJS_PUBLICKEY: ${{ secrets.VITE_EMAILJS_PUBLICKEY }}
+       VITE_APP_EMAILJS_EMAIL: ${{ secrets.VITE_APP_EMAILJS_EMAIL }}
+   ```
+
+4. Push to the main branch to trigger deployment to production, or to the dev branch to deploy to staging.
 
 
 ## 📁 Project Structure
