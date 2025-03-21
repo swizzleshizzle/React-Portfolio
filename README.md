@@ -52,7 +52,6 @@ A modern, responsive portfolio website built with React and Three.js, featuring 
    - Create a new service (e.g., Gmail, Outlook)
    - Create an email template with variables: {{name}}, {{email}}, {{company}}, and {{message}}
    - Update the configuration in `src/config/emailjs.js` with your service ID, template ID, and public key
-   - For detailed instructions, see [EmailJS Setup Guide](docs/EMAILJS_SETUP.md)
 
 4. Start the development server:
    ```bash
@@ -105,7 +104,6 @@ This project includes a GitHub Actions workflow for automated deployment. To set
 
 3. Push to the main branch to trigger deployment to production, or to the dev branch to deploy to staging.
 
-For more detailed deployment instructions, see the [Deployment Guide](docs/DEPLOYMENT.md).
 
 ## 📁 Project Structure
 
@@ -130,8 +128,6 @@ ReactPortfolio/
 ├── .github/            # GitHub workflows for CI/CD
 ├── docs/               # Documentation
 ├── .gitignore          # Git ignore file
-├── deploy.bat          # Windows deployment script
-├── deploy.sh           # Unix deployment script
 ├── index.html          # HTML entry point
 ├── package.json        # Project dependencies
 ├── README.md           # Project documentation
