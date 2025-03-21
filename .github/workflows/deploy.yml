@@ -22,13 +22,16 @@ jobs:
       - name: Install dependencies
         run: npm install --legacy-peer-deps
 
+        
+      - name: Create .env file
+        run: |
+          echo "VITE_EMAILJS_PUBLICKEY=${{ secrets.EMAILJS_PUBLICKEY }}" >> .env
+          echo "VITE_EMAILJS_TEMPLATEID=${{ secrets.EMAILJS_TEMPLATEID }}" >> .env
+          echo "VITE_EMAILJS_SERVICEID=${{ secrets.EMAILJS_SERVICEID }}" >> .env
+          echo "VITE_EMAILJS_EMAIL=${{ secrets.EMAILJS_EMAIL }}" >> .env
+
       - name: Build project
         run: npm run build
-        env:
-          REACT_APP_EMAILJS_PUBLICKEY: ${{ secrets.EMAILJS_PUBLICKEY }}
-          REACT_APP_EMAILJS_TEMPLATEID: ${{ secrets.EMAILJS_TEMPLATEID }}
-          REACT_APP_EMAILJS_SERVICEID: ${{ secrets.EMAILJS_SERVICEID }}
-          REACT_APP_EMAILJS_EMAIL: ${{ secrets.EMAILJS_EMAIL }}
 
       - name: Set production environment variables
         run: |
