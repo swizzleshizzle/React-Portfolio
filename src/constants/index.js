@@ -1,6 +1,6 @@
 import reactjs from "../assets/tech/reactjs.png"
 import nodejs from "../assets/tech/nodejs.png"
-import threejs from "../assets/tech/threejs.svg"
+import threejs from "../assets/tech/threejs.webp"
 import aws from "../assets/tech/aws.png"
 import ai from "../assets/tech/ai.png"
 import stocks from "../assets/tech/stocks2.png"
@@ -38,15 +38,15 @@ const serviceCards = [
   },
   {
     id: 2,
-    title: "Backend Development",
-    description: "Developing server-side applications and APIs with Node.js, Python, and other backend frameworks. SQL Database development & management with a touch of Oracle.",
-    icon: nodejs,
-  },
-  {
-    id: 3,
     title: "Data Visualization",
     description: "Creating interactive data visualizations and dashboards using D3.js, Three.js, Vue.js and other modern visualization libraries.",
     icon: threejs,
+  },
+  {
+    id: 3,
+    title: "Backend Development",
+    description: "Developing server-side applications and APIs with Node.js, Python, and other backend frameworks. SQL Database development & management with a touch of Oracle.",
+    icon: nodejs,
   },
   {
     id: 4,
@@ -121,4 +121,28 @@ const experiences = [
   }
 ];
 
-export { skills, serviceCards, projects, experiences };
+// Social media links
+const socialLinks = [
+  {
+    name: "LinkedIn",
+    url: "https://www.linkedin.com/in/michael-greene-ab59041b5/",
+    icon: "linkedin"
+  },
+  {
+    name: "GitHub",
+    url: "https://github.com/swizzleshizzle",
+    icon: "github"
+  },
+  {
+    name: "Instagram",
+    url: "https://www.instagram.com/swizzle_shizzle/",
+    icon: "instagram"
+  },
+  {
+    name: "Twitter",
+    url: "https://x.com/ShizzleSwizzle",
+    icon: "twitter"
+  }
+];
+
+export { skills, serviceCards, projects, experiences, socialLinks };

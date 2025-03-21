@@ -23,18 +23,22 @@ const ProjectModal = ({ project, onClose }) => {
 
     // Prevent body scrolling when modal is open
     document.body.style.overflow = 'hidden';
+    // Add modal-open class to body for CSS targeting
+    document.body.classList.add('modal-open');
 
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
       document.removeEventListener('keydown', handleEscKey);
       document.body.style.overflow = 'auto';
+      // Remove modal-open class when modal is closed
+      document.body.classList.remove('modal-open');
     };
   }, [onClose]);
 
   if (!project) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-70 flex items-center justify-center p-4">
       <div 
         ref={modalRef}
         className="relative bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto"
@@ -93,7 +97,7 @@ const ProjectModal = ({ project, onClose }) => {
             </div>
           </div>
 
-          <div className="flex justify-center mt-6">
+          <div className="flex justify-center mt-6 mb-8">
             <a 
               href={project.link} 
               target="_blank" 

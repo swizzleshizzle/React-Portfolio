@@ -41,7 +41,7 @@ const GRADIENT_COLORS = {
   to: new THREE.Color('#38bdf8'),   // sky-400
 }
 
-const hightlightColors = ["#c1b001", "#a8140e", "#4315aa", "#359d09", "#8f4762"];
+const hightlightColors = ["#7b01c1", "#a8140e", "#4315aa", "#000596", "#8f4762"];
 
 // Background color
 const BACKGROUND_COLOR = '#242424'
@@ -127,8 +127,8 @@ function Spaceship({ shipType = 0, scale = 0.005, speed = 1.0, direction = 'left
           // Check mesh name to apply different styling
           if (child.material.name.includes('lambert2SG') || child.material.name.includes('Body')) {
             // Main body - apply the random color
-            //child.material.color = new THREE.Color(shipColor.current);
-            //child.material.emissive = new THREE.Color(shipColor.current);
+            child.material.color = new THREE.Color('#333333');
+            child.material.emissive = new THREE.Color('#222222');
             child.material.emissiveIntensity = 0.5;
           } else if (child.material.name.includes('lambert4SG') || child.material.name.includes('Window')) {
             // Windows - make them glow white or light blue
@@ -270,9 +270,6 @@ function Spaceship({ shipType = 0, scale = 0.005, speed = 1.0, direction = 'left
       shipRef.current.position.y += movementVector.current.y * 0.1;
       shipRef.current.position.z += movementVector.current.z * 0.01;
 
-      // Remove the roll oscillation to prevent unwanted rotation
-      // The ships will maintain their correct orientation now
-
       // Check if ship is out of bounds
       const pos = shipRef.current.position;
       if (
@@ -284,9 +281,6 @@ function Spaceship({ shipType = 0, scale = 0.005, speed = 1.0, direction = 'left
         // Reset ship position
         const newPos = generateRandomPosition();
         shipRef.current.position.set(newPos[0], newPos[1], newPos[2]);
-
-        // Clear rotation when respawning
-        shipRef.current.quaternion.identity();
 
         // Recalculate movement vector
         if (direction === 'left-to-right') {
@@ -312,15 +306,13 @@ function Spaceship({ shipType = 0, scale = 0.005, speed = 1.0, direction = 'left
         movementVector.current.normalize().multiplyScalar(speed)
 
         // Orient the ship to face the direction of travel using quaternions
-        if (shipRef.current) {
-          const directionVector = movementVector.current.clone().normalize();
-          const quaternion = new THREE.Quaternion();
-          // For some models the forward vector might be different - adjust as needed
-          // In this case, we need to use positive Z as forward
-          const defaultForward = new THREE.Vector3(0, 0, 1);
-          quaternion.setFromUnitVectors(defaultForward, directionVector);
-          shipRef.current.quaternion.copy(quaternion);
-        }
+        const directionVector = movementVector.current.clone().normalize();
+        const quaternion = new THREE.Quaternion();
+        // For some models the forward vector might be different - adjust as needed
+        // In this case, we need to use positive Z as forward
+        const defaultForward = new THREE.Vector3(0, 0, 1);
+        quaternion.setFromUnitVectors(defaultForward, directionVector);
+        shipRef.current.quaternion.copy(quaternion);
       }
     }
   })
@@ -346,7 +338,7 @@ function Spaceship({ shipType = 0, scale = 0.005, speed = 1.0, direction = 'left
         attenuation={(t) => t * t}
         opacity={trailConfig.opacity}
       >
-        <primitive object={gltf.scene.clone()} />
+        <primitive object={gltf.scene} />
       </Trail>
     </group>
   )
@@ -528,6 +520,7 @@ function CanvasWrapper({ scrollProgress = 0 }) {
 function HeroThree() {
   const [scrolled, setScrolled] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const previousScrollProgress = useRef(0);
 
   useEffect(() => {
     // Debug log
@@ -550,10 +543,11 @@ function HeroThree() {
       // Apply easing function for smoother animation
       progress = Math.pow(progress, 0.8); // Slight ease-out effect
       
-      setScrollProgress(progress);
-      
-      // Debug
-      console.log('Scroll progress:', progress);
+      // Only update if the change is significant to reduce re-renders
+      if (Math.abs(progress - previousScrollProgress.current) > 0.01) {
+        setScrollProgress(progress);
+        previousScrollProgress.current = progress;
+      }
     };
 
     window.addEventListener('scroll', handleScroll);
@@ -572,19 +566,11 @@ function HeroThree() {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
-
   return (
     <div className={`hero-three-container`}>
       <CanvasWrapper scrollProgress={scrollProgress} />
     </div>
   )
-  /* LEAVE THIS COMMENTED OUT
-  return (
-    <div className={`hero-three-container ${scrolled ? 'scrolled' : 'scrolled'}`}>
-      <CanvasWrapper />
-    </div>
-  )
-    */
 }
 
 export default HeroThree

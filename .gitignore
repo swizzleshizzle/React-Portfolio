@@ -27,3 +27,9 @@ dist-ssr
 # windsurf rules
 .windsurfrules
 .mindMap.txt
+
+#emailjs
+src/config/emailjs.js
+src/config/emailjs-template-example.html
+src/docs/EMAILJS_SETUP.md
+docs/EMAILJS_SETUP.md
