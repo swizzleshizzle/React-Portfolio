@@ -51,9 +51,9 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           ARGS: "-avz --delete"
           SOURCE: "dist/"
-          REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
-          REMOTE_USER: ${{ secrets.REMOTE_USER }}
-          TARGET: ${{ secrets.REMOTE_PATH }}
+          HOST: ${{ secrets.REMOTE_HOST }}
+          USERNAME: ${{ secrets.REMOTE_USER }}
+          REMOTE_PATH: ${{ secrets.REMOTE_PATH }}
           
       - name: Deploy to staging (dev branch)
         if: github.ref == 'refs/heads/dev'
@@ -62,9 +62,9 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           ARGS: "-avz --delete"
           SOURCE: "dist/"
-          REMOTE_HOST: ${{ secrets.REMOTE_HOST_STAGING }}
-          REMOTE_USER: ${{ secrets.REMOTE_USER_STAGING }}
-          TARGET: ${{ secrets.REMOTE_PATH_STAGING }}
+          HOST: ${{ secrets.REMOTE_HOST_STAGING }}
+          USERNAME: ${{ secrets.REMOTE_USER_STAGING }}
+          REMOTE_PATH: ${{ secrets.REMOTE_PATH_STAGING }}
           
       - name: Notify deployment status
         run: |
