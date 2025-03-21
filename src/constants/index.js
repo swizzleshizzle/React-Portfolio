@@ -33,8 +33,8 @@ const serviceCards = [
   {
     id: 1,
     title: "Front End Development",
-    description: "Building interactive and responsive front-end interfaces with React and other JS frameworks that comply with UI/UX best practices.",
-    icon: reactjs, // Could be used for an icon class if you add icons later
+    description: "Building interactive and responsive front-end interfaces with React and other JS frameworks that comply with UI/UX best practices!",
+    icon: reactjs, 
   },
   {
     id: 2,
