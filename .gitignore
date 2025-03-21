@@ -35,3 +35,9 @@ docs/EMAILJS_SETUP.md
 
 react_deploy_key
 react_deploy_key.pub
+
+.git-deploy.bat
+.git-deploy.sh
+
+.deploy.bat
+.deploy.sh
