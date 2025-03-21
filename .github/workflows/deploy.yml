@@ -50,10 +50,14 @@ jobs:
             echo "PATH=${{ secrets.REMOTE_PATH_STAGING }}" >> $GITHUB_ENV
           fi
 
-      - name: Setup SSH
-        uses: webfactory/ssh-agent@v0.7.0
-        with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+          - name: Setup SSH manually
+          run: |
+            eval "$(ssh-agent -s)"
+            mkdir -p ~/.ssh
+            echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+            chmod 600 ~/.ssh/id_rsa
+            ssh-add ~/.ssh/id_rsa
+            ssh-keyscan -H "$HOST" >> ~/.ssh/known_hosts
 
       - name: Deploy via rsync
         run: |
