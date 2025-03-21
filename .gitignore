@@ -36,6 +36,13 @@ docs/EMAILJS_SETUP.md
 react_deploy_key
 react_deploy_key.pub
 
+# Environment variables
+.env
+.env.local
+.env.development
+.env.production
+.env.test
+
 .git-deploy.bat
 .git-deploy.sh
 

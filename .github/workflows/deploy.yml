@@ -22,6 +22,14 @@ jobs:
       - name: Install dependencies
         run: npm install --legacy-peer-deps
 
+        
+      - name: Create .env file
+        run: |
+          echo "VITE_EMAILJS_PUBLICKEY=${{ secrets.EMAILJS_PUBLICKEY }}" >> .env
+          echo "VITE_EMAILJS_TEMPLATEID=${{ secrets.EMAILJS_TEMPLATEID }}" >> .env
+          echo "VITE_EMAILJS_SERVICEID=${{ secrets.EMAILJS_SERVICEID }}" >> .env
+          echo "VITE_EMAILJS_EMAIL=${{ secrets.EMAILJS_EMAIL }}" >> .env
+
       - name: Build project
         run: npm run build
 
@@ -58,5 +66,3 @@ jobs:
       - name: Deploy via rsync
         run: |
           rsync -e "ssh -p 21098 -o StrictHostKeyChecking=no" -avz --delete dist/ "$USER@$HOST:$TARGET_PATH"
-
-       
