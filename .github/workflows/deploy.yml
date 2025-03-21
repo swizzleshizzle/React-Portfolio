@@ -41,12 +41,19 @@ jobs:
 
       - name: Setup SSH manually
         run: |
+          echo "HOST is: $HOST"
+          if [ -z "$HOST" ]; then
+            echo "❌ HOST environment variable is empty. Exiting."
+            exit 1
+          fi
+  
           eval "$(ssh-agent -s)"
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh-add ~/.ssh/id_rsa
-          ssh-keyscan -H "$HOST" >> ~/.ssh/known_hosts
+  
+          echo "✅ SSH setup complete"
 
       - name: Test SSH connection
         run: |
