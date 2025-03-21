@@ -89,7 +89,7 @@ const ProjectModal = ({ project, onClose }) => {
               {project.technologies.map((tech, index) => (
                 <span 
                   key={index} 
-                  className="px-3 py-1 bg-gray-200 dark:bg-gray-700 rounded-full  text-sm"
+                  className="px-3 py-1 bg-gray-700 dark:bg-gray-700 rounded-full  text-sm"
                 >
                   {tech}
                 </span>

@@ -60,7 +60,7 @@ const SocialLinks = () => {
   
   return (
     <div 
-      className={`fixed right-6 bottom-6 z-50 social-links-container transition-all duration-500 ${
+      className={`fixed right-6 bottom-6 z-60 social-links-container transition-all duration-500 ${
         visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-16'
       }`}
     >
