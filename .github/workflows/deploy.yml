@@ -55,11 +55,8 @@ jobs:
   
           echo "✅ SSH setup complete"
 
-      - name: Test SSH connection
-        run: |
-          ssh -o StrictHostKeyChecking=no "$USER@$HOST" "echo ✅ SSH connection successful"
-
       - name: Deploy via rsync
         run: |
-          rsync -avz --delete dist/ "$USER@$HOST:$TARGET_PATH"
+          rsync -e "ssh -p 21098 -o StrictHostKeyChecking=no" -avz --delete dist/ "$USER@$HOST:$TARGET_PATH"
+
        
