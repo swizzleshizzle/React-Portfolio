@@ -1,12 +1,11 @@
 // EmailJS Configuration
 // Replace these with your actual EmailJS credentials from https://www.emailjs.com/
-const EMAILJS_CONFIG = {
-  serviceId: process.env.REACT_APP_EMAILJS_SERVICEID, // Create a service in EmailJS dashboard and use its ID
-  templateId: process.env.REACT_APP_EMAILJS_TEMPLATEID, // Create an email template and use its ID
-  publicKey: process.env.REACT_APP_EMAILJS_PUBLICKEY, // Your EmailJS public key
+export const EMAILJS_CONFIG = {
+  serviceId: import.meta.env.VITE_EMAILJS_SERVICEID, // Create a service in EmailJS dashboard and use its ID
+  templateId: import.meta.env.VITE_EMAILJS_TEMPLATEID, // Create an email template and use its ID
+  publicKey: import.meta.env.VITE_EMAILJS_PUBLICKEY, // Your EmailJS public key
   
   // The email address that will receive the contact form submissions
-  recipientEmail: process.env.REACT_APP_EMAILJS_EMAIL
+  recipientEmail: import.meta.env.VITE_APP_EMAILJS_EMAIL
 };
 
-export default EMAILJS_CONFIG;
