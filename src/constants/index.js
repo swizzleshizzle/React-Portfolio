@@ -33,37 +33,37 @@ const serviceCards = [
   {
     id: 1,
     title: "Front End Development",
-    description: "Building interactive and responsive front-end interfaces with React and other JS frameworks that comply with UI/UX best practices!",
+    description: "I build responsive, interactive front-end experiences using React and a variety of modern frameworks. My experience with both open-source and proprietary tools allows me to adapt quickly, implement scalable solutions, and align seamlessly with design and development standards.",
     icon: reactjs, 
   },
   {
     id: 2,
     title: "Data Visualization",
-    description: "Creating interactive data visualizations and dashboards using D3.js, Three.js, Vue.js and other modern visualization libraries.",
+    description: "I create interactive data visualizations and dashboards using tools like D3.js, Three.js, Vue.js. My approach combines technical precision with visual storytelling to transform complex data into intuitive, engaging user experiences.",
     icon: threejs,
   },
   {
     id: 3,
     title: "Backend Development",
-    description: "Developing server-side applications and APIs with Node.js, Python, and other backend frameworks. SQL Database development & management with a touch of Oracle.",
+    description: "I develop robust server-side applications and APIs using Node.js, Python, and other backend frameworks. My experience extends to SQL database design and management, including hands-on work with Oracle and other relational systems.",
     icon: nodejs,
   },
   {
     id: 4,
     title: "Cloud Solutions",
-    description: "Designing and implementing scalable cloud-based applications on AWS, Azure, and other cloud platforms.",
+    description: "I deploy and manage cloud-hosted applications on AWS, Azure, and other platforms—provisioning and maintaining scalable infrastructure with Docker, and streamlining release workflows using GitHub Actions and CI/CD best practices.",
     icon: aws,
   },
   {
     id: 5,
     title: "AI Integration",
-    description: "Incorporating artificial intelligence and machine learning capabilities into web and mobile applications.",
+    description: "I incorporate AI and machine learning into web and mobile applications, using tools like TensorFlow, Python, and cloud-based ML services to deliver intelligent, adaptive user experiences.",
     icon: ai,
   },
   {
     id: 6,
     title: "Trading Systems",
-    description: "Developing algorithmic trading systems and financial analysis tools with a focus on performance and reliability.",
+    description: "I develop reliable, high-performance algorithmic trading systems and financial analysis tools. Currently my focus is on QuantConnect’s Python framework for strategy development and backtesting.",
     icon: stocks,
   }
 ];
