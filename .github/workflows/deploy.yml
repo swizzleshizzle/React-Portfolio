@@ -28,6 +28,7 @@ jobs:
           REACT_APP_EMAILJS_PUBLICKEY: ${{ secrets.EMAILJS_PUBLICKEY }}
           REACT_APP_EMAILJS_TEMPLATEID: ${{ secrets.EMAILJS_TEMPLATEID }}
           REACT_APP_EMAILJS_SERVICEID: ${{ secrets.EMAILJS_SERVICEID }}
+          REACT_APP_EMAILJS_EMAIL: ${{ secrets.EMAILJS_EMAIL }}
 
       - name: Set production environment variables
         run: |
