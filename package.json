@@ -39,6 +39,7 @@
     "react-tilt": "^1.0.2",
     "react-vertical-timeline-component": "^3.5.3",
     "tailwindcss": "^4.0.12",
+    "terser": "^5.39.0",
     "vite": "^6.2.0"
   }
 }
