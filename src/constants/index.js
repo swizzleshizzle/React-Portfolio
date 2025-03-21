@@ -72,21 +72,21 @@ const serviceCards = [
 const projects = [
   {
     id: 1,
-    title: "Fibonacci Moving Average Indicator",
-    description: "A sophisticated technical indicator that employs the first 15 numbers of the Fibonacci sequence to create dynamic moving average channels.",
-    image: fma,
-    technologies: ["Pinescript", "API", "Algorithmic Trading"],
-    link: "https://www.tradingview.com/script/GPSApq2E-Fibonacci-Moving-Average-Plus/",
-    longDescription: "The Fibonacci Moving Average Indicator is a powerful technical analysis tool that leverages the mathematical properties of the Fibonacci sequence to create dynamic support and resistance levels. By utilizing the first 15 numbers of the sequence as weighting factors, this indicator generates moving average channels that adapt to market volatility. The indicator helps traders identify potential trend reversals, continuation patterns, and optimal entry/exit points. It includes customizable parameters for timeframe selection, color schemes, and alert conditions.\n\nThe source code for this indicator is available on Tradingview via Pinecode, allowing traders to modify and adapt the indicator to their specific needs."
-  },
-  {
-    id: 2,
     title: "Personal Portfolio Webpage",
     description: "The website youre looking at! I really wanted to experiment and test my skills with this project using modern React frameworks and best practices, here we are!",
     image: portfolio,
     technologies: ["React", "Three.js", "TailwindCSS", "Framer Motion"],
     link: "https://github.com/swizzleshizzle/React-Portfolio/",
     longDescription: "This portfolio website represents my journey into modern web development, combining cutting-edge technologies to create an engaging and interactive experience. I built it from scratch using React and Vite for lightning-fast performance, while leveraging Three.js to create immersive 3D elements that make the site stand out. The responsive design is powered by TailwindCSS, allowing for a clean, professional appearance across all devices.\n\nThe site features interactive elements like the 3D word cloud of skills, tilt-effect cards that respond to mouse movement, and this modal system for project details. I've implemented smooth animations using Framer Motion to enhance the user experience, and organized the codebase with best practices for maintainability and scalability.\n\nThis project wasn't just about showcasing my work—it was an opportunity to push my technical boundaries and create something that reflects both my skills and personality as a developer. The entire codebase is available on GitHub, demonstrating my commitment to clean, well-structured code and modern development practices."
+  },
+  {
+    id: 2,
+    title: "Fibonacci Moving Average Indicator",
+    description: "A sophisticated technical indicator that employs the first 15 numbers of the Fibonacci sequence to create dynamic moving average channels.",
+    image: fma,
+    technologies: ["Pinescript", "API", "Algorithmic Trading"],
+    link: "https://www.tradingview.com/script/GPSApq2E-Fibonacci-Moving-Average-Plus/",
+    longDescription: "The Fibonacci Moving Average Indicator is a powerful technical analysis tool that leverages the mathematical properties of the Fibonacci sequence to create dynamic support and resistance levels. By utilizing the first 15 numbers of the sequence as weighting factors, this indicator generates moving average channels that adapt to market volatility. The indicator helps traders identify potential trend reversals, continuation patterns, and optimal entry/exit points. It includes customizable parameters for timeframe selection, color schemes, and alert conditions.\n\nThe source code for this indicator is available on Tradingview via Pinecode, allowing traders to modify and adapt the indicator to their specific needs."
   }
 ];
 
