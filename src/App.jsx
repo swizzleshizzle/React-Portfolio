@@ -23,15 +23,19 @@ export default function App() {
 
   return (
     <BrowserRouter>
-      <div id="backgroundViz" className="min-h-screen">
+      <div id="backgroundViz" className="flex flex-col min-h-screen">
         
         {showDebug ? (
           <div style={{ height: '100vh', width: '100%' }}>
             <HeroThree />
           </div>
         ) : (
-          <><MainContent /></>
-
+          <>
+            <div className="flex-grow">
+              <MainContent />
+            </div>
+            <Footer />
+          </>
         )}
         
       </div>

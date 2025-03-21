@@ -74,18 +74,56 @@ This repository includes a GitHub Actions workflow file (`.github/workflows/depl
 To set it up:
 
 1. Configure your server for SSH access from GitHub Actions:
-   - Generate an SSH key pair
-   - Add the public key to your server's `~/.ssh/authorized_keys`
-   - Add the private key as a GitHub secret named `SSH_PRIVATE_KEY`
+   - Generate an SSH key pair (without a passphrase):
+     ```bash
+     ssh-keygen -t rsa -b 4096 -C "github-actions-deploy" -f github-actions-deploy
+     ```
+   - Add the public key (`github-actions-deploy.pub`) to your server's `~/.ssh/authorized_keys`
+   - Copy the private key content to use in the next step
 
-2. Add other required secrets to your GitHub repository:
-   - `REMOTE_HOST`: Your server's hostname or IP
-   - `REMOTE_USER`: SSH username
-   - `REMOTE_PATH`: Path to your web directory on the server
+2. Add required secrets to your GitHub repository:
+   - Go to your repository on GitHub
+   - Navigate to Settings > Secrets and variables > Actions
+   - Click "New repository secret" and add the following secrets:
 
-3. Uncomment and customize the deployment section in the workflow file.
+   **For Production (main branch):**
+   - `SSH_PRIVATE_KEY`: The entire content of the private key file generated in step 1
+   - `REMOTE_HOST`: Your production server hostname or IP address
+   - `REMOTE_USER`: SSH username for your production server
+   - `REMOTE_PATH`: Absolute path to your web directory on the production server (e.g., `/var/www/html/portfolio`)
 
-4. Push to the configured branch (main or dev) to trigger deployment.
+   **For Staging (dev branch):**
+   - `REMOTE_HOST_STAGING`: Your staging server hostname or IP address
+   - `REMOTE_USER_STAGING`: SSH username for your staging server
+   - `REMOTE_PATH_STAGING`: Absolute path to your web directory on the staging server
+
+3. The workflow will automatically:
+   - Build your project when you push to the main or dev branch
+   - Run the Three.js build fixes
+   - Deploy to the appropriate environment based on the branch
+
+4. You can also manually trigger a deployment:
+   - Go to the "Actions" tab in your repository
+   - Select the "Deploy React Portfolio" workflow
+   - Click "Run workflow"
+   - Choose the branch and environment to deploy
+
+### Troubleshooting GitHub Actions Deployment
+
+If your GitHub Actions deployment fails, check the following:
+
+1. **SSH Key Issues:**
+   - Ensure the private key is correctly formatted in the GitHub secret
+   - Verify the public key is properly added to `authorized_keys` on your server
+   - Check server SSH configuration allows key-based authentication
+
+2. **Permission Issues:**
+   - Ensure the user specified in `REMOTE_USER` has write permissions to the target directory
+   - You may need to run `chmod -R 755 /path/to/web/directory` on your server
+
+3. **Path Issues:**
+   - Double-check that `REMOTE_PATH` points to a valid directory on your server
+   - Ensure the path is absolute (starts with `/`)
 
 ### Server Configuration
 

@@ -133,6 +133,92 @@ button:focus-visible {
   }
 }
 
+/* Mobile touch improvements */
+@media (max-width: 768px) {
+  /* Prevent text selection on touch */
+  * {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    user-select: none;
+  }
+  
+  /* Allow text selection in input fields and textareas */
+  input, textarea {
+    user-select: text;
+  }
+  
+  /* Improve touch targets */
+  button, a, [role="button"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/* iOS specific fixes */
+@supports (-webkit-touch-callout: none) {
+  /* Fix for iOS Safari 100vh issue */
+  .min-h-screen, .h-screen {
+    height: -webkit-fill-available;
+  }
+  
+  /* Fix for iOS click events */
+  canvas {
+    touch-action: manipulation;
+  }
+  
+  /* Additional iOS fixes */
+  .ios-device canvas {
+    cursor: pointer !important;
+  }
+  
+  /* Improve text rendering on iOS */
+  .ios-device * {
+    -webkit-font-smoothing: antialiased;
+  }
+  
+  /* Fix for iOS touch delay */
+  .ios-device a, 
+  .ios-device button,
+  .ios-device [role="button"] {
+    touch-action: manipulation;
+  }
+}
+
+/* Fix for iOS Safari bottom bar */
+@supports (padding: max(0px)) {
+  body {
+    padding-bottom: max(0px, env(safe-area-inset-bottom));
+  }
+  
+  .footer-container {
+    padding-bottom: max(1rem, env(safe-area-inset-bottom));
+  }
+}
+
+/* Disable context menu on canvas elements */
+canvas {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+canvas::-webkit-context-menu {
+  display: none;
+}
+
+/* Prevent right-click context menu on word cloud container */
+.word-cloud-container {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.word-cloud-container::-webkit-context-menu {
+  display: none;
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;

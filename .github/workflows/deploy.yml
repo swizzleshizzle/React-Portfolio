@@ -1,11 +1,27 @@
-name: Deploy Portfolio Website
+name: Deploy React Portfolio
 
 on:
   push:
-    branches: [ main, dev ]  # Trigger on pushes to main and dev branches
-  pull_request:
-    branches: [ main ]       # Trigger on PRs to main branch
-  workflow_dispatch:         # Allow manual triggering
+    branches: [ main, dev ]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy to'
+        required: true
+        default: 'production'
+        type: choice
+        options:
+          - production
+          - staging
+
+# Required GitHub Secrets:
+# - SSH_PRIVATE_KEY: Private SSH key for deployment
+# - REMOTE_HOST: Production server hostname or IP
+# - REMOTE_USER: Production server SSH username
+# - REMOTE_PATH: Production server deployment path
+# - REMOTE_HOST_STAGING: Staging server hostname or IP
+# - REMOTE_USER_STAGING: Staging server SSH username
+# - REMOTE_PATH_STAGING: Staging server deployment path
 
 jobs:
   build-and-deploy:
@@ -27,37 +43,34 @@ jobs:
       - name: Build project
         run: npm run build
         
+      - name: Fix Three.js build issues
+        run: |
+          echo "Running Three.js build fixes..."
+          node fix-three-build.js
+        
       - name: Deploy to production (main branch)
         if: github.ref == 'refs/heads/main'
-        # Replace this with your deployment method
-        # Example using SSH deploy:
-        # uses: easingthemes/ssh-deploy@main
-        # with:
-        #   SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-        #   ARGS: "-avz --delete"
-        #   SOURCE: "dist/"
-        #   REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
-        #   REMOTE_USER: ${{ secrets.REMOTE_USER }}
-        #   TARGET: ${{ secrets.REMOTE_PATH }}
-        run: |
-          echo "Deploying to production server..."
-          # Add your deployment commands here
+        uses: easingthemes/ssh-deploy@main
+        with:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          ARGS: "-avz --delete"
+          SOURCE: "dist/"
+          REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
+          REMOTE_USER: ${{ secrets.REMOTE_USER }}
+          TARGET: ${{ secrets.REMOTE_PATH }}
           
       - name: Deploy to staging (dev branch)
         if: github.ref == 'refs/heads/dev'
-        # Replace this with your staging deployment method
-        run: |
-          echo "Deploying to staging server..."
-          # Add your staging deployment commands here
+        uses: easingthemes/ssh-deploy@main
+        with:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          ARGS: "-avz --delete"
+          SOURCE: "dist/"
+          REMOTE_HOST: ${{ secrets.REMOTE_HOST_STAGING }}
+          REMOTE_USER: ${{ secrets.REMOTE_USER_STAGING }}
+          TARGET: ${{ secrets.REMOTE_PATH_STAGING }}
           
-      - name: Notify on success
-        if: success()
+      - name: Notify deployment status
         run: |
-          echo "Deployment successful!"
-          # Add notification commands here (e.g., Slack, Discord, email)
-          
-      - name: Notify on failure
-        if: failure()
-        run: |
-          echo "Deployment failed!"
-          # Add failure notification commands here
+          echo "Deployment completed successfully!"
+          echo "Deployed to: ${GITHUB_REF##*/} environment"

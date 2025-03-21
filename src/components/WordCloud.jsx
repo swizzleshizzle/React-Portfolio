@@ -357,7 +357,7 @@ function RotatingContainer({ children, speed = 0.2 }) {
 // Custom controls component with zoom limits
 function ZoomLimitedControls(props) {
   const controlsRef = useRef()
-  const { size } = useThree()
+  const { size, gl, camera } = useThree()
   const [isMobile, setIsMobile] = useState(false)
   
   // Check if device is mobile
@@ -374,6 +374,33 @@ function ZoomLimitedControls(props) {
     return () => window.removeEventListener('resize', checkMobile)
   }, [])
   
+  // Disable right-click context menu on canvas
+  useEffect(() => {
+    const canvas = gl.domElement;
+    
+    const handleContextMenu = (e) => {
+      e.preventDefault();
+      return false;
+    };
+    
+    // Prevent right-click context menu
+    canvas.addEventListener('contextmenu', handleContextMenu);
+    
+    // Cleanup
+    return () => {
+      canvas.removeEventListener('contextmenu', handleContextMenu);
+    };
+  }, [gl]);
+  
+  // Disable right mouse button controls
+  useEffect(() => {
+    if (controlsRef.current) {
+      // Override the mouse button mapping to disable right-click rotation
+      // TrackballControls uses: 0 = left, 1 = middle, 2 = right
+      controlsRef.current.mouseButtons.RIGHT = -1; // Disable right button
+    }
+  }, [controlsRef.current]);
+  
   return (
     <TrackballControls
       ref={controlsRef}
@@ -383,6 +410,8 @@ function ZoomLimitedControls(props) {
       rotateSpeed={2}
       zoomSpeed={1}
       panSpeed={0.5}
+      noZoom={props.enableZoom === false}
+      noPan={props.enablePan === false}
       {...props}
     />
   )
@@ -430,7 +459,7 @@ function WordCloud({ customSkills, count = 0, radius = 25 }) {
   const isComplete = clickedSkills.length === totalSkillCount;
   
   return (
-    <div className="word-cloud-container h-[600px] w-full relative">
+    <div className="word-cloud-container border-purple-600/10 border-2 rounded-3xl h-[600px] w-full relative">
       <Canvas
         camera={{ position: [0, 0, 60], fov: 75 }}
         style={{ background: BACKGROUND_COLOR }}
