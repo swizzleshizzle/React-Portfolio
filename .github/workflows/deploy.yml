@@ -1,0 +1,63 @@
+name: Deploy Portfolio Website
+
+on:
+  push:
+    branches: [ main, dev ]  # Trigger on pushes to main and dev branches
+  pull_request:
+    branches: [ main ]       # Trigger on PRs to main branch
+  workflow_dispatch:         # Allow manual triggering
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm install --legacy-peer-deps
+        
+      - name: Build project
+        run: npm run build
+        
+      - name: Deploy to production (main branch)
+        if: github.ref == 'refs/heads/main'
+        # Replace this with your deployment method
+        # Example using SSH deploy:
+        # uses: easingthemes/ssh-deploy@main
+        # with:
+        #   SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        #   ARGS: "-avz --delete"
+        #   SOURCE: "dist/"
+        #   REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
+        #   REMOTE_USER: ${{ secrets.REMOTE_USER }}
+        #   TARGET: ${{ secrets.REMOTE_PATH }}
+        run: |
+          echo "Deploying to production server..."
+          # Add your deployment commands here
+          
+      - name: Deploy to staging (dev branch)
+        if: github.ref == 'refs/heads/dev'
+        # Replace this with your staging deployment method
+        run: |
+          echo "Deploying to staging server..."
+          # Add your staging deployment commands here
+          
+      - name: Notify on success
+        if: success()
+        run: |
+          echo "Deployment successful!"
+          # Add notification commands here (e.g., Slack, Discord, email)
+          
+      - name: Notify on failure
+        if: failure()
+        run: |
+          echo "Deployment failed!"
+          # Add failure notification commands here

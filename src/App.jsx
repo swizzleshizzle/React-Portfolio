@@ -33,7 +33,7 @@ export default function App() {
           <><MainContent /></>
 
         )}
-        <Footer />
+        
       </div>
     </BrowserRouter>
   );

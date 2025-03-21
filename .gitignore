@@ -22,3 +22,15 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+
+# windsurf rules
+.windsurfrules
+.mindMap.txt
+
+
+src/config/emailjs-template-example.html
+src/docs/EMAILJS_SETUP.md
+docs/EMAILJS_SETUP.md
+
+

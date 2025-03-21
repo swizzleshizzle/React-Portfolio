@@ -1,10 +1,16 @@
-import React, { Suspense, useEffect } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import WordCloud from './WordCloud';
-import { serviceCards } from '../constants';
+import { serviceCards, projects, experiences } from '../constants';
 import TiltCard from './TiltCard';
 import ScrollSection from './ScrollSection';
 import HeroThree from './HeroThree';
+import ProjectCard from './ProjectCard';
+import ProjectModal from './ProjectModal';
+import ExperienceTimeline from './ExperienceTimeline';
+import ContactForm from './ContactForm';
+import SocialLinks from './SocialLinks';
 import TradingViewWidget from './TVEmbed';
+import { motion } from 'framer-motion';
 
 const MainContent = () => {
     // Debug log to check component loading
@@ -12,8 +18,29 @@ const MainContent = () => {
         console.log('MainContent mounted');
     }, []);
 
+    // State for the selected project modal
+    const [selectedProject, setSelectedProject] = useState(null);
+
+    // Function to handle project card click
+    const handleProjectClick = (project) => {
+        setSelectedProject(project);
+    };
+
+    // Function to close the modal
+    const closeModal = () => {
+        setSelectedProject(null);
+    };
+
     return (
         <main className="relative">
+            {/* Project Modal */}
+            {selectedProject && (
+                <ProjectModal 
+                    project={selectedProject} 
+                    onClose={closeModal} 
+                />
+            )}
+            
             {/* Hero Section - Shown first in the center */}
             <ScrollSection id="hero" isHero={true}>
                 <div className="w-full h-full">
@@ -27,8 +54,12 @@ const MainContent = () => {
                 <ScrollSection id="about">
                     <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-6">About Me</h2>
                     <div className="prose dark:prose-invert max-w-none">
-                        <p className="mb-3 text-gray-500 dark:text-gray-400">Passionate about creating efficient, scalable solutions for complex problems, I specialize in React, Node.js, and modern web development technologies, with a focus on financial technology applications.</p>
-                        <p className="mb-3 text-gray-500 dark:text-gray-400">I am continuously expanding my skillset and seeking opportunities in software development, fintech, and quantitative trading, aiming to integrate advanced technology with financial markets.</p>
+                        <p className="mb-3 text-gray-500 dark:text-white" style={{ color: '#cfdbe8' }}>As an inspired, early career software engineer, I am constantly looking for compelling opportunities to apply my skills and contribute to meaningful projects. Adapting to new technology is par for the course, and I welcome the challenge of learning new tools and frameworks.</p>
+                        <p className="mb-3 text-gray-500 dark:text-white" style={{ color: '#cfdbe8' }}>I am continuously expanding my skillset and seeking new opportunities in all fields of software development, including web development, mobile development, and data analysis. One of the most rewarding aspects of my work is the ability to create something that can have a positive impact on people's lives.</p>
+                        <p className="mb-3 text-gray-500 dark:text-white" style={{ color: '#cfdbe8' }}>One of the sectors I have a particular passion for is Finance, and I love exploring the role software can play in the industry. AI/ML trading algorithms with deep forensic analysis capabilities will likely have a disruptive impact on the industry, and I am excited to be a part of that.</p>
+                        <p className="mb-3 text-gray-500 dark:text-white" style={{ color: '#cfdbe8' }}>I am also a big fan of 3D graphics, and I love how they can be used to represent data in a more engaging way. Like 3D Audio visualizers, or 3D representations of user interfaces in AR/VR.</p>
+                        <br />
+                        <p className="mb-3 text-gray-500 dark:text-white" style={{ color: '#cfdbe8' }}>Normally I would just list out my skills, but why do that when I can make them spin around in 3D instead?</p>
                     </div>
                 </ScrollSection>
 
@@ -60,62 +91,52 @@ const MainContent = () => {
                 <ScrollSection id="projects" staggerChildren={true}>
                     <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">Recent Projects</h2>
 
-
                     <div className="grid md:grid-cols-2 gap-8">
-                        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
-                            <img src="/project1.jpg" alt="Project 1" className="w-full h-48 object-cover" />
-                            <div className="p-6">
-                                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Algorithmic Trading Platform</h3>
-                                <p className="text-gray-700 dark:text-gray-400 mb-4">A comprehensive platform for developing, testing, and deploying trading algorithms with real-time market data integration.</p>
-                                <div className="flex gap-2">
-                                    <span className="px-3 py-1 bg-gray-200 dark:bg-gray-700 rounded-full text-sm">React</span>
-                                    <span className="px-3 py-1 bg-gray-200 dark:bg-gray-700 rounded-full text-sm">Node.js</span>
-                                    <span className="px-3 py-1 bg-gray-200 dark:bg-gray-700 rounded-full text-sm">WebSockets</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
-                            <img src="/project2.jpg" alt="Project 2" className="w-full h-48 object-cover" />
-                            <div className="p-6">
-                                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Financial Data Visualization Dashboard</h3>
-                                <p className="text-gray-700 dark:text-gray-400 mb-4">Interactive dashboard for visualizing complex financial data sets with customizable charts and real-time filtering capabilities.</p>
-                                <div className="flex gap-2">
-                                    <span className="px-3 py-1 bg-gray-200 dark:bg-gray-700 rounded-full text-sm">D3.js</span>
-                                    <span className="px-3 py-1 bg-gray-200 dark:bg-gray-700 rounded-full text-sm">Vue.js</span>
-                                    <span className="px-3 py-1 bg-gray-200 dark:bg-gray-700 rounded-full text-sm">Express</span>
-                                </div>
-                            </div>
-                        </div>
+                        {projects.map(project => (
+                            <ProjectCard
+                                key={project.id}
+                                project={project}
+                                onClick={handleProjectClick}
+                            />
+                        ))}
                     </div>
                 </ScrollSection>
 
                 <ScrollSection id="experience" staggerChildren={true}>
-                    <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">Experience</h2>
-
-                    <ol className="relative border-s border-gray-200 dark:border-gray-700">
-                        <li className="mb-10 ms-4">
-                            <div className="absolute w-3 h-3 bg-gray-200 rounded-full mt-1.5 -start-1.5 border border-white dark:border-gray-900 dark:bg-gray-700"></div>
-                            <time className="mb-1 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">February 2022</time>
-                            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Application UI code in Tailwind CSS</h3>
-                            <p className="mb-4 text-base font-normal text-gray-500 dark:text-gray-400">Get access to over 20+ pages including a dashboard layout, charts, kanban board, calendar, and pre-order E-commerce & Marketing pages.</p>
-                            <a href="#" className="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:outline-none focus:ring-gray-100 focus:text-blue-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 dark:focus:ring-gray-700">Learn more <svg className="w-3 h-3 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 5h12m0 0L9 1m4 4L9 9" />
-                            </svg></a>
-                        </li>
-                        <li className="mb-10 ms-4">
-                            <div className="absolute w-3 h-3 bg-gray-200 rounded-full mt-1.5 -start-1.5 border border-white dark:border-gray-900 dark:bg-gray-700"></div>
-                            <time className="mb-1 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">March 2022</time>
-                            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Marketing UI design in Figma</h3>
-                            <p className="text-base font-normal text-gray-500 dark:text-gray-400">All of the pages and components are first designed in Figma and we keep a parity between the two versions even as we update the project.</p>
-                        </li>
-                        <li className="ms-4">
-                            <div className="absolute w-3 h-3 bg-gray-200 rounded-full mt-1.5 -start-1.5 border border-white dark:border-gray-900 dark:bg-gray-700"></div>
-                            <time className="mb-1 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">April 2022</time>
-                            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">E-Commerce UI code in Tailwind CSS</h3>
-                            <p className="text-base font-normal text-gray-500 dark:text-gray-400">Get started with dozens of web components and interactive elements built on top of Tailwind CSS.</p>
-                        </li>
-                    </ol>
+                    <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">Professional Experience</h2>
+                    <ExperienceTimeline experiences={experiences} />
+                </ScrollSection>
+                
+                <ScrollSection id="contact" staggerChildren={true}>
+                    <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">Contact Me</h2>
+                    <div className="flex flex-col md:flex-row gap-8 items-start">
+                        <div className="w-full md:w-1/2">
+                            <p className="text-lg dark:text-gray-300 mb-6" style={{ color: '#cfdbe8' }}>
+                                I'm always open to discussing new projects, creative ideas, or opportunities to be part of your vision. Feel free to reach out using the form below.
+                            </p>
+                            <div className="bg-indigo-100 dark:bg-indigo-900/0 p-6 rounded-lg mb-6">
+                                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">Contact Information</h3>
+                                <div className="space-y-3 flex flex-col items-center">
+                                    <p className="flex items-center text-gray-700 dark:text-gray-300"><a className="flex items-center text-gray-700 dark:text-gray-300" href="mailto:michael.greene.pro@gmail.com">
+                                        <svg className="w-5 h-5 mr-3 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                                        </svg>
+                                        michael.greene.pro@gmail.com
+                                    </a></p>
+                                    <p className="flex items-center text-gray-700 dark:text-gray-300">
+                                        <svg className="w-5 h-5 mr-3 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                        </svg>
+                                        Pittsburgh, PA, USA
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="w-full md:w-1/2">
+                            <ContactForm />
+                        </div>
+                    </div>
                 </ScrollSection>
                 <ScrollSection id="tvembed">
                     <div>
@@ -123,6 +144,8 @@ const MainContent = () => {
                 </ScrollSection>
             </div>
             
+            {/* Social Media Links */}
+            <SocialLinks />
         </main>
     );
 };
