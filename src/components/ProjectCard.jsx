@@ -14,8 +14,8 @@ const ProjectCard = ({ project, onClick }) => {
             className="w-full h-48 object-contain" 
           />
           <div className="p-6">
-            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">{title}</h3>
-            <p className="text-gray-700 dark:text-gray-400 mb-4">{description}</p>
+            <h3 className="text-xl font-bold text-white mb-2">{title}</h3>
+            <p className="text-gray-400 mb-4">{description}</p>
             <div className="flex flex-wrap gap-2 mb-4">
               {technologies.map((tech, index) => (
                 <span 

@@ -41,7 +41,7 @@ const ProjectModal = ({ project, onClose }) => {
     <div className="fixed inset-0 z-70 flex items-center justify-center p-4">
       <div 
         ref={modalRef}
-        className="relative bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto"
+        className="relative bg-gray-800 rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto"
         style={{ 
           transform: 'scale(1)',
           animation: 'modal-pop 0.3s ease-out'
@@ -50,7 +50,7 @@ const ProjectModal = ({ project, onClose }) => {
         {/* Close button */}
         <button 
           onClick={onClose}
-          className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 z-10"
+          className="absolute top-4 right-4 text-gray-400 hover:text-gray-200 z-10"
         >
           <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -68,21 +68,21 @@ const ProjectModal = ({ project, onClose }) => {
 
         {/* Project content */}
         <div className="p-6">
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-4">
+          <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
             {project.title}
           </h2>
           
           <div className="mb-6">
-            <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-2">
+            <h3 className="text-lg font-semibold text-gray-200 mb-2">
               Description
             </h3>
-            <p className="text-gray-700 dark:text-gray-400 whitespace-pre-line">
+            <p className="text-gray-400 whitespace-pre-line">
               {project.longDescription || project.description}
             </p>
           </div>
 
           <div className="mb-6 justify-between items-center relative">
-            <h3 className="text-lg justify-center font-semibold text-gray-800 dark:text-gray-200 mb-2">
+            <h3 className="text-lg justify-center font-semibold text-gray-200 mb-2">
               Technologies
             </h3>
             <div className="flex justify-center flex-wrap gap-2">
@@ -102,7 +102,7 @@ const ProjectModal = ({ project, onClose }) => {
               href={project.link} 
               target="_blank" 
               rel="noopener noreferrer"
-              className="inline-flex items-center px-6 py-3 bg-white-100 hover:bg-purple-200 text-white font-medium rounded-lg transition-colors"
+              className="inline-flex items-center px-6 py-3 bg-purple-700 hover:bg-purple-800 text-white font-medium rounded-lg transition-colors"
             >
               View Project
               <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
