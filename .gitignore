@@ -33,3 +33,5 @@ src/config/emailjs-template-example.html
 src/docs/EMAILJS_SETUP.md
 docs/EMAILJS_SETUP.md
 
+react_deploy_key
+react_deploy_key.pub

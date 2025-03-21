@@ -2,17 +2,8 @@ name: Deploy React Portfolio
 
 on:
   push:
-    branches: [ main, dev ]
+    branches: [ main ]
   workflow_dispatch:
-    inputs:
-      environment:
-        description: 'Environment to deploy to'
-        required: true
-        default: 'production'
-        type: choice
-        options:
-          - production
-          - staging
 
 jobs:
   build-and-deploy:
@@ -34,20 +25,12 @@ jobs:
       - name: Build project
         run: npm run build
 
-      - name: Determine environment and set variables
-        id: set-env
+      - name: Set production environment variables
         run: |
-          if [[ "${{ github.event.inputs.environment }}" == "production" || "${{ github.ref }}" == "refs/heads/main" ]]; then
-            echo "DEPLOY_ENV=production" >> $GITHUB_ENV
-            echo "HOST=${{ secrets.REMOTE_HOST }}" >> $GITHUB_ENV
-            echo "USER=${{ secrets.REMOTE_USER }}" >> $GITHUB_ENV
-            echo "TARGET_PATH=${{ secrets.REMOTE_PATH }}" >> $GITHUB_ENV
-          else
-            echo "DEPLOY_ENV=staging" >> $GITHUB_ENV
-            echo "HOST=${{ secrets.REMOTE_HOST_STAGING }}" >> $GITHUB_ENV
-            echo "USER=${{ secrets.REMOTE_USER_STAGING }}" >> $GITHUB_ENV
-            echo "TARGET_PATH=${{ secrets.REMOTE_PATH_STAGING }}" >> $GITHUB_ENV
-          fi
+          echo "DEPLOY_ENV=production" >> $GITHUB_ENV
+          echo "HOST=${{ secrets.REMOTE_HOST }}" >> $GITHUB_ENV
+          echo "USER=${{ secrets.REMOTE_USER }}" >> $GITHUB_ENV
+          echo "TARGET_PATH=${{ secrets.REMOTE_PATH }}" >> $GITHUB_ENV
 
       - name: Debug environment variables
         run: |
@@ -65,7 +48,11 @@ jobs:
           ssh-add ~/.ssh/id_rsa
           ssh-keyscan -H "$HOST" >> ~/.ssh/known_hosts
 
+      - name: Test SSH connection
+        run: |
+          ssh -o StrictHostKeyChecking=no "$USER@$HOST" "echo ✅ SSH connection successful"
+
       - name: Deploy via rsync
         run: |
           rsync -avz --delete dist/ "$USER@$HOST:$TARGET_PATH"
-          echo "✅ Deployed to $DEPLOY_ENV"
+       
