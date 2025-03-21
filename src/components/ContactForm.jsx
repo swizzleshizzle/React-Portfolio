@@ -88,14 +88,14 @@ const ContactForm = () => {
   };
 
   return (
-    <div className="bg-white dark:bg-gray-800/94 rounded-lg shadow-lg p-6">
+    <div className="bg-gray-800/94 rounded-lg shadow-lg p-6">
       {formStatus.isSubmitted ? (
         <div className="text-center py-8">
           <svg className="w-16 h-16 text-green-500 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
           </svg>
-          <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">Thank You!</h3>
-          <p className="text-gray-600 dark:text-gray-300">Your message has been sent successfully. I'll get back to you as soon as possible.</p>
+          <h3 className="text-xl font-semibold text-white mb-2">Thank You!</h3>
+          <p className="text-gray-300">Your message has been sent successfully. I'll get back to you as soon as possible.</p>
           <button
             onClick={() => setFormStatus({ isSubmitting: false, isSubmitted: false, error: null })}
             className="mt-6 bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded-md transition-colors duration-300"
@@ -106,7 +106,7 @@ const ContactForm = () => {
       ) : (
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Name <span className="text-red-500">*</span></label>
+            <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-1">Name <span className="text-red-500">*</span></label>
             <input
               type="text"
               id="name"
@@ -119,7 +119,7 @@ const ContactForm = () => {
           </div>
           
           <div>
-            <label htmlFor="company" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Company</label>
+            <label htmlFor="company" className="block text-sm font-medium text-gray-300 mb-1">Company</label>
             <input
               type="text"
               id="company"
@@ -131,7 +131,7 @@ const ContactForm = () => {
           </div>
           
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email <span className="text-red-500">*</span></label>
+            <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-1">Email <span className="text-red-500">*</span></label>
             <input
               type="email"
               id="email"
@@ -144,7 +144,7 @@ const ContactForm = () => {
           </div>
           
           <div>
-            <label htmlFor="message" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Message <span className="text-red-500">*</span></label>
+            <label htmlFor="message" className="block text-sm font-medium text-gray-300 mb-1">Message <span className="text-red-500">*</span></label>
             <textarea
               id="message"
               name="message"
@@ -172,7 +172,7 @@ const ContactForm = () => {
             {formStatus.isSubmitting ? 'Sending...' : 'Send Message'}
           </button>
           
-          <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
+          <p className="text-xs text-gray-400 mt-2">
             * Required fields
           </p>
           

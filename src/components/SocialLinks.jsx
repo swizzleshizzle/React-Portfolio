@@ -71,7 +71,7 @@ const SocialLinks = () => {
             href={link.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-center w-12 h-12 rounded-full bg-white dark:bg-gray-800 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 text-gray-700 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400 social-link"
+            className="flex items-center justify-center w-12 h-12 rounded-full bg-gray-800 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 text-white hover:text-indigo-400 social-link"
             aria-label={link.name}
             title={link.name}
           >

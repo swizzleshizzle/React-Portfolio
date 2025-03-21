@@ -450,6 +450,9 @@ function HeroScene({ scrollProgress = 0 }) {
         <OrbitControls
           enableZoom={false}
           enablePan={false}
+          minPolarAngle={Math.PI / 2}
+          maxPolarAngle={Math.PI / 2}
+          rotateSpeed={0.5}
         />
       </>
     )
@@ -494,6 +497,9 @@ function HeroScene({ scrollProgress = 0 }) {
         <OrbitControls
           enableZoom={false}
           enablePan={false}
+          minPolarAngle={Math.PI / 2}
+          maxPolarAngle={Math.PI / 2}
+          rotateSpeed={0.5}
         />
       </>
     )

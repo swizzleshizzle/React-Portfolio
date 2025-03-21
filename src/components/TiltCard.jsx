@@ -158,7 +158,7 @@ const TiltCard = ({ title, description, icon, children }) => {
     return (
         <div
             ref={cardRef}
-            className="relative block p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 cursor-pointer overflow-hidden transform-gpu"
+            className="relative block p-6 bg-gray-800 border border-gray-700 rounded-lg shadow-sm cursor-pointer overflow-hidden transform-gpu"
             style={{
                 transform: `perspective(1200px) rotateX(${rotation.x}deg) rotateY(${rotation.y}deg) translateX(${position.x}px) translateY(${position.y}px)`,
                 boxShadow: calculateShadow(),
@@ -195,10 +195,10 @@ const TiltCard = ({ title, description, icon, children }) => {
                             />
                         </div>
                     )}
-                    <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white relative z-10">
+                    <h5 className="mb-2 text-2xl font-bold tracking-tight text-white relative z-10">
                         {title}
                     </h5>
-                    <p className="font-normal text-gray-700 dark:text-gray-400 relative z-10">
+                    <p className="font-normal text-gray-400 relative z-10">
                         {description}
                     </p>
                 </>
