@@ -46,7 +46,7 @@ jobs:
       - name: Fix Three.js build issues
         run: |
           echo "Running Three.js build fixes..."
-          node fix-three-build.js
+          node --experimental-modules fix-three-build.js
         
       - name: Deploy to production (main branch)
         if: github.ref == 'refs/heads/main'
