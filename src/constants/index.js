@@ -33,37 +33,37 @@ const serviceCards = [
   {
     id: 1,
     title: "Front End Development",
-    description: "I build responsive, interactive front-end experiences using React and a variety of modern frameworks. My experience with both open-source and proprietary tools allows me to adapt quickly, implement scalable solutions, and align seamlessly with design and development standards.",
+    description: "Creating responsive and interactive front-end experiences is necessary in the modern zeitgeist, so emploring modern tools like React and TailwindCSS is key to shipping great products. My experience with both open-source and proprietary tools gives me the understanding to adapt quickly to new standards and technologies as the industry evolves.",
     icon: reactjs, 
   },
   {
     id: 2,
     title: "Data Visualization",
-    description: "I create interactive data visualizations and dashboards using tools like D3.js, Three.js, Vue.js. My approach combines technical precision with visual storytelling to transform complex data into intuitive, engaging user experiences.",
+    description: "Data visualization is an ever evolving field, and I enjoy trying to push the boundaries of what is possible. Precision and visual storytelling can transform complex data into intuitive user experiences, and having access to a diverse toolbox is mandatory in today's development landscape to produce solutions that are both engaging and effective.",
     icon: threejs,
   },
   {
     id: 3,
     title: "Backend Development",
-    description: "I develop robust server-side applications and APIs using Node.js, Python, and other backend frameworks. My experience extends to SQL database design and management, including hands-on work with Oracle and other relational systems.",
+    description: "Creating secure, scalable backend systems is key to building robust applications. I've used Node.js, Django, Flask, and Spring boot to build backend systems, but, every project is unique, and adapting to the requirements means being flexible and agile. I think serverless solutions like Firebase have a lot of merit and I enjoy exploring their capabilities as well. ",
     icon: nodejs,
   },
   {
     id: 4,
     title: "Cloud Solutions",
-    description: "I deploy and manage cloud-hosted applications on AWS, Azure, and other platforms—provisioning and maintaining scalable infrastructure with Docker, and streamlining release workflows using GitHub Actions and CI/CD best practices.",
+    description: "At my last tenure, most customer deployments were hosted on cloud services. This gave me solid hands on experience deploying and managing customer solutions on platforms like AWS and Azure. A big component of cloud hosted solutions is containerization, so employing tools like Docker and Kubernetes allows for efficient deployments with CI/CD pipelines.",
     icon: aws,
   },
   {
     id: 5,
     title: "AI Integration",
-    description: "I incorporate AI and machine learning into web and mobile applications, using tools like TensorFlow, Python, and cloud-based ML services to deliver intelligent, adaptive user experiences.",
+    description: "AI and Machine learning is undeniably a disruptive force in the current market. With this in mind, I am constantly pushing my skillset to incorporate AI/ML where it benefits the user experience. Using AI/ML methods like LLM APIs, Deep learning, and cloud-based ML services can add tons of value to user experiences, making them more interactive and adaptive.",
     icon: ai,
   },
   {
     id: 6,
     title: "Trading Systems",
-    description: "I develop reliable, high-performance algorithmic trading systems and financial analysis tools. Currently my focus is on QuantConnect’s Python framework for strategy development and backtesting.",
+    description: "A passion of mine is Finance and with 6+ years of personal development in the field, I have found reliability in sentiment congruent systems. My current focus is on developing precise, reliable trading systems that can be integrated with algorithmic trading platforms. Using tools like QuantConnect's Python framework has allowed me to pursue this endeavor.",
     icon: stocks,
   }
 ];
