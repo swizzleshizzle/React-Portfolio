@@ -102,7 +102,7 @@ const ProjectModal = ({ project, onClose }) => {
               href={project.link} 
               target="_blank" 
               rel="noopener noreferrer"
-              className="inline-flex items-center px-6 py-3 bg-purple-700 hover:bg-purple-800 text-white font-medium rounded-lg transition-colors"
+              className="inline-flex items-center px-6 py-3 bg-purple-700 hover:bg-purple-800 text-white font-medium rounded-lg visited"
             >
               View Project
               <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">

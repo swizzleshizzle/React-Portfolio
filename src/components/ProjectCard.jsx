@@ -45,7 +45,7 @@ const ProjectCard = ({ project, onClick }) => {
                 target="_blank" 
                 rel="noopener noreferrer"
                 onClick={(e) => e.stopPropagation()}
-                className="px-4 py-2 border border-purple-600 text-purple-600 hover:bg-purple-100 dark:hover:bg-purple-900 rounded-lg transition-colors relative"
+                className="px-4 py-2 border border-purple-600 text-purple-600 hover:bg-purple-100 dark:hover:bg-purple-900 rounded-lg visited relative"
                 style={{ zIndex: 30 }}
               >
                 Visit Project

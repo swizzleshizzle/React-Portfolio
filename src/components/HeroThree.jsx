@@ -518,7 +518,7 @@ function HeroScene({ scrollProgress = 0 }) {
             scrollProgress={scrollProgress}
           />
           <GradientText
-            text="a Full Stack Dev"
+            text="a Full Stack Developer"
             position={[0, -2, 0]}
             fontSize={0.75}
             scrollProgress={scrollProgress}
@@ -566,7 +566,7 @@ function HeroScene({ scrollProgress = 0 }) {
             scrollProgress={scrollProgress}
           />
           <GradientText
-            text="a Full Stack Dev"
+            text="a Full Stack Developer"
             position={[0, -2, 0]}
             fontSize={2}
             scrollProgress={scrollProgress}

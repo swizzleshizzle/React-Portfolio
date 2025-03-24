@@ -65,6 +65,12 @@
   }
 }
 
+a:visited {
+  color: #eeeeee;
+  background-color: transparent;
+  text-decoration: none;
+}
+
 #background {
   position: fixed;
   z-index: -1;
