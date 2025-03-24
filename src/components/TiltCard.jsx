@@ -28,16 +28,31 @@ const TiltCard = ({ title, description, icon, children }) => {
         const mouseX = e.clientX - centerX;
         const mouseY = e.clientY - centerY;
         
+        // Calculate distance from center as a percentage of card dimensions
+        const distanceX = Math.abs(mouseX) / (rect.width / 2);
+        const distanceY = Math.abs(mouseY) / (rect.height / 2);
+        
+        // Check if mouse is too far from card (more than 2x the card's dimensions away)
+        const maxDistance = 2.0; // Maximum allowed distance multiplier
+        if (distanceX > maxDistance || distanceY > maxDistance) {
+            // If too far, don't update tilt
+            return;
+        }
+        
+        // Apply distance limiting - clamp values to acceptable range
+        const clampedMouseX = Math.max(-rect.width, Math.min(rect.width, mouseX));
+        const clampedMouseY = Math.max(-rect.height, Math.min(rect.height, mouseY));
+        
         // Save last mouse position
-        setLastMousePosition({ x: mouseX, y: mouseY });
+        setLastMousePosition({ x: clampedMouseX, y: clampedMouseY });
         
         // Calculate rotation (stronger when closer to edges)
-        const rotateX = (mouseY / (rect.height / 2)) * -10; // Inverted Y for natural tilt
-        const rotateY = (mouseX / (rect.width / 2)) * 10;
+        const rotateX = (clampedMouseY / (rect.height / 2)) * -10; // Inverted Y for natural tilt
+        const rotateY = (clampedMouseX / (rect.width / 2)) * 10;
         
         // Calculate slight position shift
-        const posX = (mouseX / rect.width) * 5;
-        const posY = (mouseY / rect.height) * 5;
+        const posX = (clampedMouseX / rect.width) * 5;
+        const posY = (clampedMouseY / rect.height) * 5;
         
         // Apply smoothed rotation and position
         setRotation({ x: rotateX, y: rotateY });
@@ -50,31 +65,13 @@ const TiltCard = ({ title, description, icon, children }) => {
         lastInteractionTimeRef.current = Date.now();
         setShouldReset(false);
         
-        // If we have a last known position, restore it
-        if (lastMousePosition && cardRef.current) {
-            const card = cardRef.current;
-            const rect = card.getBoundingClientRect();
-            
-            const { x: mouseX, y: mouseY } = lastMousePosition;
-            
-            // Calculate rotation based on last known position
-            const rotateX = (mouseY / (rect.height / 2)) * -10;
-            const rotateY = (mouseX / (rect.width / 2)) * 10;
-            
-            // Calculate position based on last known position
-            const posX = (mouseX / rect.width) * 5;
-            const posY = (mouseY / rect.height) * 5;
-            
-            // Apply rotation and position
-            setRotation({ x: rotateX, y: rotateY });
-            setPosition({ x: posX, y: posY });
-        }
     };
     
     // Handle mouse leave
     const handleMouseLeave = () => {
         setIsHovered(false);
         lastInteractionTimeRef.current = Date.now();
+        //setShouldReset(true);
     };
     
     // Animation loop to check for inactivity and handle reset
