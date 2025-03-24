@@ -33,7 +33,7 @@ const serviceCards = [
   {
     id: 1,
     title: "Front End Development",
-    description: "Creating responsive and interactive front-end experiences is necessary in the modern zeitgeist, so emploring modern tools like React and TailwindCSS is key to shipping great products. My experience with both open-source and proprietary tools gives me the understanding to adapt quickly to new standards and technologies as the industry evolves.",
+    description: "Creating responsive and interactive front-end experiences is necessary in the modern zeitgeist, so using modern tools like React and TailwindCSS is key to shipping great products. My experience with both open-source and proprietary tools gives me the understanding to adapt quickly to new standards and technologies as the industry evolves.",
     icon: reactjs, 
   },
   {
