@@ -7,7 +7,7 @@ import React from "react";
 
 
 scan({
-  enabled: false,
+  enabled: true,
 });
 // Disable right-click context menu on Three.js elements
 document.addEventListener('contextmenu', (e) => {
