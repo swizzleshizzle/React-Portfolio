@@ -7,6 +7,16 @@ import stocks from "../assets/tech/stocks2.png"
 import fma from "../assets/projectScreens/fma.png"
 import portfolio from "../assets/projectScreens/portfolio.png"
 
+// Hero taglines that rotate in the hero section
+const heroTaglines = [
+  "a Full Stack Developer",
+  "a Javascript Expert",
+  "a FinTech Enthusiast",
+  "a Problem Solver",
+  "a UI/UX Designer",
+  "an AI Integration Specialist"
+];
+
 // Skills for the 3D word cloud
 const skills = [
   // Programming Languages
@@ -230,4 +240,4 @@ const attributions = [
   }
 ];
 
-export { skills, serviceCards, projects, experiences, socialLinks, attributions };
+export { skills, serviceCards, projects, experiences, socialLinks, attributions, heroTaglines };

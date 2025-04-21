@@ -3,7 +3,9 @@ import React, { useRef, useEffect, Suspense, useState } from 'react'
 import { Canvas, useFrame, useLoader } from '@react-three/fiber'
 import { Text, OrbitControls, Trail } from '@react-three/drei'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
+import { Typewriter } from 'react-simple-typewriter'
 import './HeroThree.css'
+import { heroTaglines } from '../constants'
 
 // Import spaceship models
 import spaceship1Model from '../assets/ships/Spaceship1.glb?url'
@@ -91,6 +93,123 @@ function GradientText({ text, position, fontSize = 5, scrollProgress = 0 }) {
       {text}
     </Text>
   )
+}
+
+// Typewriter text component for 3D scene
+function TypewriterText({ position, fontSize = 2, scrollProgress = 0 }) {
+  const textRef = useRef();
+  const [displayedText, setDisplayedText] = useState("");
+  const [currentTaglineIndex, setCurrentTaglineIndex] = useState(0);
+  const [isTyping, setIsTyping] = useState(true);
+  const [currentLetterIndex, setCurrentLetterIndex] = useState(0);
+  const timeoutRef = useRef(null);
+  
+  // Calculate animated position based on scroll progress
+  const animatedY = position[1] + (scrollProgress * 40);
+  const animatedZ = position[2] - (scrollProgress * 30);
+  const animatedPosition = [position[0], animatedY, animatedZ];
+  
+  // Calculate opacity based on scroll progress
+  const opacity = 1 - (scrollProgress * 1);
+
+  // Typewriter effect logic  
+  useEffect(() => {
+    const currentTagline = heroTaglines[currentTaglineIndex];
+    
+    function typeAnimation() {
+      if (isTyping) {
+        if (currentLetterIndex < currentTagline.length) {
+          setDisplayedText(currentTagline.substring(0, currentLetterIndex + 1));
+          setCurrentLetterIndex(prev => prev + 1);
+          // Faster typing speed (was 70ms)
+          timeoutRef.current = setTimeout(typeAnimation, 40);
+        } else {
+          // Shorter pause when fully typed (was 1500ms)
+          timeoutRef.current = setTimeout(() => {
+            setIsTyping(false);
+            typeAnimation();
+          }, 1000);
+        }
+      } else {
+        // Erasing
+        if (currentLetterIndex > 0) {
+          setDisplayedText(currentTagline.substring(0, currentLetterIndex - 1));
+          setCurrentLetterIndex(prev => prev - 1);
+          // Faster backspacing speed (was 30ms)
+          timeoutRef.current = setTimeout(typeAnimation, 20);
+        } else {
+          // Move to next tagline after erasing
+          const nextIndex = (currentTaglineIndex + 1) % heroTaglines.length;
+          setCurrentTaglineIndex(nextIndex);
+          setIsTyping(true);
+          // Shorter pause between taglines (was 300ms)
+          timeoutRef.current = setTimeout(typeAnimation, 150);
+        }
+      }
+    }
+
+    // Clear any existing timeout
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+
+    // Start the animation
+    timeoutRef.current = setTimeout(typeAnimation, 100);
+
+    // Cleanup on unmount or when dependencies change
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, [currentTaglineIndex, currentLetterIndex, isTyping]);
+  
+  // Add blinking cursor effect
+  const [showCursor, setShowCursor] = useState(true);
+  
+  useEffect(() => {
+    // Faster cursor blinking (was 530ms)
+    const cursorIntervalId = setInterval(() => {
+      setShowCursor(prev => !prev);
+    }, 400);
+    
+    return () => clearInterval(cursorIntervalId);
+  }, []);
+
+  // Combine text and cursor
+  const textWithCursor = `${displayedText}${showCursor ? "_" : ""}`;
+  
+  useFrame(({ clock }) => {
+    if (textRef.current) {
+      const t = (Math.sin(clock.getElapsedTime() * 0.5) + 1) * 0.5;
+
+      if (t < 0.5) {
+        const mappedT = t * 2;
+        textRef.current.material.color.copy(GRADIENT_COLORS.from).lerp(GRADIENT_COLORS.via, mappedT);
+      } else {
+        const mappedT = (t - 0.5) * 2;
+        textRef.current.material.color.copy(GRADIENT_COLORS.via).lerp(GRADIENT_COLORS.to, mappedT);
+      }
+      
+      // Apply opacity from scroll
+      textRef.current.material.opacity = opacity;
+    }
+  });
+  
+  return (
+    <Text
+      ref={textRef}
+      position={animatedPosition}
+      fontSize={fontSize}
+      letterSpacing={-0.05}
+      lineHeight={1}
+      material-toneMapped={false}
+      material-transparent={true}
+      textAlign="center"
+    >
+      {textWithCursor}
+    </Text>
+  );
 }
 
 // Spaceship component with trail
@@ -517,10 +636,9 @@ function HeroScene({ scrollProgress = 0 }) {
             fontSize={0.75}
             scrollProgress={scrollProgress}
           />
-          <GradientText
-            text="a Full Stack Developer"
+          <TypewriterText
             position={[0, -2, 0]}
-            fontSize={0.75}
+            fontSize={0.6}
             scrollProgress={scrollProgress}
           />
         </group>
@@ -565,10 +683,9 @@ function HeroScene({ scrollProgress = 0 }) {
             fontSize={2}
             scrollProgress={scrollProgress}
           />
-          <GradientText
-            text="a Full Stack Developer"
+          <TypewriterText
             position={[0, -2, 0]}
-            fontSize={2}
+            fontSize={1.5}
             scrollProgress={scrollProgress}
           />
         </group>
@@ -652,6 +769,7 @@ function HeroThree() {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
+
   return (
     <div className={`hero-three-container`}>
       <CanvasWrapper scrollProgress={scrollProgress} />
