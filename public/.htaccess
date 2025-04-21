@@ -7,6 +7,9 @@ RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-l
 RewriteRule ^ index.html [QSA,L]
 
+RewriteCond %{HTTP_HOST} ^www\.swizzleshizzle\.com$ [NC]
+RewriteRule ^(.*)$ http://swizzleshizzle.com/$1 [L,R=301]
+
 # Set security headers
 <IfModule mod_headers.c>
     # Protect against XSS attacks
