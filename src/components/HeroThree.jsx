@@ -102,6 +102,7 @@ function TypewriterText({ position, fontSize = 2, scrollProgress = 0 }) {
   const [currentTaglineIndex, setCurrentTaglineIndex] = useState(0);
   const [isTyping, setIsTyping] = useState(true);
   const [currentLetterIndex, setCurrentLetterIndex] = useState(0);
+  const timeoutRef = useRef(null);
   
   // Calculate animated position based on scroll progress
   const animatedY = position[1] + (scrollProgress * 40);
@@ -110,48 +111,67 @@ function TypewriterText({ position, fontSize = 2, scrollProgress = 0 }) {
   
   // Calculate opacity based on scroll progress
   const opacity = 1 - (scrollProgress * 1);
-  
-  // Typewriter effect logic
+
+  // Typewriter effect logic  
   useEffect(() => {
-    const typewriterTick = () => {
-      const currentTagline = heroTaglines[currentTaglineIndex];
-      
+    const currentTagline = heroTaglines[currentTaglineIndex];
+    
+    function typeAnimation() {
       if (isTyping) {
-        // Typing phase
         if (currentLetterIndex < currentTagline.length) {
           setDisplayedText(currentTagline.substring(0, currentLetterIndex + 1));
           setCurrentLetterIndex(prev => prev + 1);
+          // Faster typing speed (was 70ms)
+          timeoutRef.current = setTimeout(typeAnimation, 40);
         } else {
-          // Finished typing
-          setTimeout(() => {
+          // Shorter pause when fully typed (was 1500ms)
+          timeoutRef.current = setTimeout(() => {
             setIsTyping(false);
-          }, 1500); // Pause at the end of typing
+            typeAnimation();
+          }, 1000);
         }
       } else {
-        // Backspacing phase
+        // Erasing
         if (currentLetterIndex > 0) {
           setDisplayedText(currentTagline.substring(0, currentLetterIndex - 1));
           setCurrentLetterIndex(prev => prev - 1);
+          // Faster backspacing speed (was 30ms)
+          timeoutRef.current = setTimeout(typeAnimation, 20);
         } else {
-          // Finished backspacing
+          // Move to next tagline after erasing
+          const nextIndex = (currentTaglineIndex + 1) % heroTaglines.length;
+          setCurrentTaglineIndex(nextIndex);
           setIsTyping(true);
-          setCurrentTaglineIndex((prev) => (prev + 1) % heroTaglines.length);
+          // Shorter pause between taglines (was 300ms)
+          timeoutRef.current = setTimeout(typeAnimation, 150);
         }
       }
+    }
+
+    // Clear any existing timeout
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+
+    // Start the animation
+    timeoutRef.current = setTimeout(typeAnimation, 100);
+
+    // Cleanup on unmount or when dependencies change
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
     };
-
-    const intervalId = setInterval(typewriterTick, isTyping ? 40 : 20);
-    
-    return () => clearInterval(intervalId);
-  }, [currentLetterIndex, isTyping, currentTaglineIndex]);
-
+  }, [currentTaglineIndex, currentLetterIndex, isTyping]);
+  
   // Add blinking cursor effect
   const [showCursor, setShowCursor] = useState(true);
   
   useEffect(() => {
+    // Faster cursor blinking (was 530ms)
     const cursorIntervalId = setInterval(() => {
       setShowCursor(prev => !prev);
-    }, 530);
+    }, 400);
     
     return () => clearInterval(cursorIntervalId);
   }, []);
@@ -161,15 +181,14 @@ function TypewriterText({ position, fontSize = 2, scrollProgress = 0 }) {
   
   useFrame(({ clock }) => {
     if (textRef.current) {
-      const t = (Math.sin(clock.getElapsedTime() * 0.5) + 1) * 0.5
+      const t = (Math.sin(clock.getElapsedTime() * 0.5) + 1) * 0.5;
 
       if (t < 0.5) {
-        const mappedT = t * 2
-        textRef.current.material.color.copy(GRADIENT_COLORS.from).lerp(GRADIENT_COLORS.via, mappedT)
-      }
-      else {
-        const mappedT = (t - 0.5) * 2
-        textRef.current.material.color.copy(GRADIENT_COLORS.via).lerp(GRADIENT_COLORS.to, mappedT)
+        const mappedT = t * 2;
+        textRef.current.material.color.copy(GRADIENT_COLORS.from).lerp(GRADIENT_COLORS.via, mappedT);
+      } else {
+        const mappedT = (t - 0.5) * 2;
+        textRef.current.material.color.copy(GRADIENT_COLORS.via).lerp(GRADIENT_COLORS.to, mappedT);
       }
       
       // Apply opacity from scroll
