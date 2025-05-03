@@ -6,6 +6,7 @@ import ai from "../assets/tech/ai.png"
 import stocks from "../assets/tech/stocks2.png"
 import fma from "../assets/projectScreens/fma.png"
 import portfolio from "../assets/projectScreens/portfolio.png"
+import equilibrium from "../assets/projectScreens/eqgjg2.png" 
 
 // Hero taglines that rotate in the hero section
 const heroTaglines = [
@@ -78,24 +79,38 @@ const serviceCards = [
   }
 ];
 
+let gameUrl = "https://itch.io/embed-upload/13373993?color=1A1C2C";
+
 // Projects data for the projects section
 const projects = [
   {
     id: 1,
+    title: "Equilibrium Protocol -- A Web Game",
+    description: "My best friend and I created this game together for the 2025 Gamedev.Js Jam! We had 14 days to build a game from scratch with a unique theme that ended up being... Balance.",
+    image: equilibrium,
+    technologies: ["React", "Phaser.js", "Vite", "Jira+Git CI/CD"],
+    link: "https://fluffymcchicken.itch.io/gjg2",
+    embed: gameUrl,
+    longDescription: "2 Weeks ago as im writing this, my best friend and I got the spontaneous idea to look into some Game Development competitions and stumbled across the 2025 Gamedev.Js Jam on Itch.io. We ended up diving in head first and brainstorming foundational concepts we could try to work with once we found out the secret theme. \n\n Once we found out the theme was Balance, we started by setting up our project structure and setting up Jira and Git to handle collaboration and version control. Once that was in place we hammered out some tickets and got to work. We really locked in on our idea to create a top-down, bullet-hell game with rogue-like elements, and we liked the direction the theme took us. Our choice of incorporation for the theme relied in our primary game mechanic of CHAOS Management! \n\n It was a fantastic experience as this was my first time ever starting, and finishing a video game development project, and doing it with a close friend made it that much more fun! \n\n Feel free to give the game a try with the embeded version or check out the official page on Itch.io!",
+  },
+  {
+    id: 2,
     title: "Personal Portfolio Webpage",
     description: "The website youre looking at! I really wanted to experiment and test my skills with this project using modern React frameworks and best practices, here we are!",
     image: portfolio,
     technologies: ["React", "Three.js", "TailwindCSS", "Framer Motion"],
     link: "https://github.com/swizzleshizzle/React-Portfolio/",
+    embed: null,
     longDescription: "This portfolio website represents my journey into modern web development, combining cutting-edge technologies to create an engaging and interactive experience. I built it from scratch using React and Vite for lightning-fast performance, while leveraging Three.js to create immersive 3D elements that make the site stand out. The responsive design is powered by TailwindCSS, allowing for a clean, professional appearance across all devices.\n\nThe site features interactive elements like the 3D word cloud of skills, tilt-effect cards that respond to mouse movement, and this modal system for project details. I've implemented smooth animations using Framer Motion to enhance the user experience, and organized the codebase with best practices for maintainability and scalability.\n\nThis project wasn't just about showcasing my work—it was an opportunity to push my technical boundaries and create something that reflects both my skills and personality as a developer. The entire codebase is available on GitHub, demonstrating my commitment to clean, well-structured code and modern development practices."
   },
   {
-    id: 2,
+    id: 3,
     title: "Fibonacci Moving Average Indicator",
     description: "A sophisticated technical indicator that employs the first 15 numbers of the Fibonacci sequence to create dynamic moving average channels.",
     image: fma,
     technologies: ["Pinescript", "API", "Algorithmic Trading"],
     link: "https://www.tradingview.com/script/GPSApq2E-Fibonacci-Moving-Average-Plus/",
+    embed: null,
     longDescription: "The Fibonacci Moving Average Indicator is a powerful technical analysis tool that leverages the mathematical properties of the Fibonacci sequence to create dynamic support and resistance levels. By utilizing the first 15 numbers of the sequence as weighting factors, this indicator generates moving average channels that adapt to market volatility. The indicator helps traders identify potential trend reversals, continuation patterns, and optimal entry/exit points. It includes customizable parameters for timeframe selection, color schemes, and alert conditions.\n\nThe source code for this indicator is available on Tradingview via Pinecode, allowing traders to modify and adapt the indicator to their specific needs."
   }
 ];

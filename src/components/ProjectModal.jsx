@@ -1,7 +1,8 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 const ProjectModal = ({ project, onClose }) => {
   const modalRef = useRef(null);
+  const [showGameModal, setShowGameModal] = useState(false);
 
   useEffect(() => {
     // Add event listener to close modal when clicking outside
@@ -97,7 +98,18 @@ const ProjectModal = ({ project, onClose }) => {
             </div>
           </div>
 
-          <div className="flex justify-center mt-6 mb-8">
+          <div className="flex justify-center mt-6 mb-8 gap-4">
+            {project.embed && (
+              <button 
+                onClick={() => setShowGameModal(true)}
+                className="inline-flex items-center px-6 py-3 bg-purple-700 hover:bg-purple-800 text-white font-medium rounded-lg"
+              >
+                Launch Game
+                <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                </svg>
+              </button>
+            )}
             <a 
               href={project.link} 
               target="_blank" 
@@ -112,6 +124,42 @@ const ProjectModal = ({ project, onClose }) => {
           </div>
         </div>
       </div>
+
+      {/* Game Embed Modal */}
+      {showGameModal && (
+        <div className="fixed inset-0 z-80 flex items-center justify-center p-4 bg-black bg-opacity-75">
+          <div 
+            className="relative bg-gray-900 rounded-lg shadow-xl overflow-hidden"
+            style={{ 
+              width: '1024px',
+              height: '768px',
+              maxWidth: '95vw',
+              maxHeight: '90vh',
+              animation: 'modal-pop 0.3s ease-out'
+            }}
+          >
+            {/* Close button */}
+            <button 
+              onClick={() => setShowGameModal(false)}
+              className="absolute top-2 right-2 text-gray-400 hover:text-gray-200 z-10 bg-gray-800 rounded-full p-1"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+
+            {/* Game iframe */}
+            <iframe 
+              src={project.embed}
+              title={`${project.title} Game`}
+              className="w-full h-full border-0"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
