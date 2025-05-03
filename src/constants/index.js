@@ -79,8 +79,6 @@ const serviceCards = [
   }
 ];
 
-let gameUrl = "https://itch.io/embed-upload/13373993?color=1A1C2C";
-
 // Projects data for the projects section
 const projects = [
   {
@@ -90,7 +88,7 @@ const projects = [
     image: equilibrium,
     technologies: ["React", "Phaser.js", "Vite", "Jira+Git CI/CD"],
     link: "https://fluffymcchicken.itch.io/gjg2",
-    embed: gameUrl,
+    githubLink: "https://github.com/Fluffy-Swizzle-Interactive/Equilibrium-Protocol-GameDevjs-2025-Entry",
     longDescription: "2 Weeks ago as im writing this, my best friend and I got the spontaneous idea to look into some Game Development competitions and stumbled across the 2025 Gamedev.Js Jam on Itch.io. We ended up diving in head first and brainstorming foundational concepts we could try to work with once we found out the secret theme. \n\n Once we found out the theme was Balance, we started by setting up our project structure and setting up Jira and Git to handle collaboration and version control. Once that was in place we hammered out some tickets and got to work. We really locked in on our idea to create a top-down, bullet-hell game with rogue-like elements, and we liked the direction the theme took us. Our choice of incorporation for the theme relied in our primary game mechanic of CHAOS Management! \n\n It was a fantastic experience as this was my first time ever starting, and finishing a video game development project, and doing it with a close friend made it that much more fun! \n\n Feel free to give the game a try with the embeded version or check out the official page on Itch.io!",
   },
   {
