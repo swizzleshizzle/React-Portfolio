@@ -21,7 +21,7 @@ RewriteRule ^ index.html [L]
     Header set Referrer-Policy "strict-origin-when-cross-origin"
     
     # Cache control for static assets
-    <FilesMatch "\.(jpg|jpeg|png|gif|ico|css|js|svg|woff|woff2|ttf|eot)$">
+    <FilesMatch "\.(jpg|jpeg|png|gif|ico|css|js|svg|woff|woff2|ttf|eot)$"
         Header set Cache-Control "max-age=2592000, public"
     </FilesMatch>
 </IfModule>
