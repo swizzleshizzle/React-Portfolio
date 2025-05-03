@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import GameEmbed from './GameEmbed';
 
 const ProjectModal = ({ project, onClose }) => {
   const modalRef = useRef(null);
@@ -149,14 +150,11 @@ const ProjectModal = ({ project, onClose }) => {
             </button>
 
             {/* Game iframe */}
-            <iframe 
-              src={project.embed}
-              title={`${project.title} Game`}
-              className="w-full h-full border-0"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            ></iframe>
+            <GameEmbed 
+              gameUrl={project.embed}
+              title={project.title}
+              link={project.link}
+            />
           </div>
         </div>
       )}
