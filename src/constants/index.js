@@ -7,6 +7,13 @@ import stocks from "../assets/tech/stocks2.png"
 import fma from "../assets/projectScreens/fma.png"
 import portfolio from "../assets/projectScreens/portfolio.png"
 import equilibrium from "../assets/projectScreens/eqgjg2.png" 
+import gitWin from "../assets/projectScreens/github_winners.png"
+import eqProt1 from "../assets/projectScreens/eq_prot_1.png"
+import eqProt2 from "../assets/projectScreens/eq_prot_2.png"
+
+// Import additional project images if needed
+// import extraImage1 from "../assets/projectScreens/extraImage1.png"
+// import extraImage2 from "../assets/projectScreens/extraImage2.png"
 
 // Hero taglines that rotate in the hero section
 const heroTaglines = [
@@ -85,17 +92,19 @@ const projects = [
     id: 1,
     title: "Equilibrium Protocol -- A Web Game",
     description: "My best friend and I created this game together for the 2025 Gamedev.Js Jam! We had 14 days to build a game from scratch with a unique theme that ended up being... Balance.",
-    image: equilibrium,
+    image: equilibrium, // Keeping the single image for backward compatibility
+    images: [equilibrium, gitWin,eqProt1,eqProt2], // New array format for multiple images
     technologies: ["React", "Phaser.js", "Vite", "Jira+Git CI/CD"],
     link: "https://fluffymcchicken.itch.io/gjg2",
     githubLink: "https://github.com/Fluffy-Swizzle-Interactive/Equilibrium-Protocol-GameDevjs-2025-Entry",
-    longDescription: "2 Weeks ago as im writing this, my best friend and I got the spontaneous idea to look into some Game Development competitions and stumbled across the 2025 Gamedev.Js Jam on Itch.io. We ended up diving in head first and brainstorming foundational concepts we could try to work with once we found out the secret theme. \n\n Once we found out the theme was Balance, we started by setting up our project structure and setting up Jira and Git to handle collaboration and version control. Once that was in place we hammered out some tickets and got to work. We really locked in on our idea to create a top-down, bullet-hell game with rogue-like elements, and we liked the direction the theme took us. Our choice of incorporation for the theme relied in our primary game mechanic of CHAOS Management! \n\n It was a fantastic experience as this was my first time ever starting, and finishing a video game development project, and doing it with a close friend made it that much more fun! \n\n Feel free to give the game a try with the embeded version or check out the official page on Itch.io!",
+    longDescription: "2 Weeks ago as im writing this, my best friend and I got the spontaneous idea to look into some Game Development competitions and stumbled across the 2025 Gamedev.Js Jam on Itch.io. We ended up diving in head first and brainstorming foundational concepts we could try to work with once we found out the secret theme. \n\n Once we found out the theme was Balance, we started by setting up our project structure and setting up Jira and Git to handle collaboration and version control. Once that was in place we hammered out some tickets and got to work. We really locked in on our idea to create a top-down, bullet-hell game with rogue-like elements, and we liked the direction the theme took us. Our choice of incorporation for the theme relied in our primary game mechanic of CHAOS Management! \n\n It was a fantastic experience as this was my first time ever starting, and finishing a video game development project, and doing it with a close friend made it that much more fun! \n\n After the results of the jam came out, we were even more impressed with our achievement as we were able to come in 4th Place for the Open Source challenge against 268 other entries! This means so much to both of us as we spent alot of time ensuring our repository was clean and well structured. \n\n Feel free to give the game a try by checking out the official page on Itch.io! (Full Release Coming... TBD)",
   },
   {
     id: 2,
     title: "Personal Portfolio Webpage",
     description: "The website youre looking at! I really wanted to experiment and test my skills with this project using modern React frameworks and best practices, here we are!",
-    image: portfolio,
+    image: portfolio, // Keeping the single image for backward compatibility
+    images: [portfolio], // New array format for multiple images
     technologies: ["React", "Three.js", "TailwindCSS", "Framer Motion"],
     link: "https://github.com/swizzleshizzle/React-Portfolio/",
     embed: null,
@@ -105,7 +114,8 @@ const projects = [
     id: 3,
     title: "Fibonacci Moving Average Indicator",
     description: "A sophisticated technical indicator that employs the first 15 numbers of the Fibonacci sequence to create dynamic moving average channels.",
-    image: fma,
+    image: fma, // Keeping the single image for backward compatibility
+    images: [fma], // New array format for multiple images
     technologies: ["Pinescript", "API", "Algorithmic Trading"],
     link: "https://www.tradingview.com/script/GPSApq2E-Fibonacci-Moving-Average-Plus/",
     embed: null,
