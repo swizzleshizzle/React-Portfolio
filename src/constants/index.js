@@ -144,6 +144,11 @@ const experiences = [
     }
   },
   {
+    date: "November 2024 - Present",
+    title: "Personal Financial Analyst",
+    description: "Leveraging my financial market expertise while transitioning in my Software Career to augment my income and keep myself busy. Started developing algorithmic trading strategies with high Sharpe Ratios to leverage my software development skills and automate my trading. Building proprietary indicators including the Fibonacci Moving Average, and educating new traders on Market Fundamentals through the Elite Trader Society community.",
+  },
+  {
     date: "Future?",
     title: "Working with YOU at YOUR Company",
     description: "I am currently looking for opportunities to expand my skills and knowledge, potentially with you and your team. If you are interested in learning more about my skills and experience, please don't hesitate to contact me on LinkedIn.",
@@ -175,6 +180,11 @@ const socialLinks = [
     name: "Twitter",
     url: "https://x.com/ShizzleSwizzle",
     icon: "twitter"
+  },
+  {
+    name: "YouTube",
+    url: "https://www.youtube.com/@swizzleshizzle",
+    icon: "youtube"
   }
 ];
 

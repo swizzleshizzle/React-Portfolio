@@ -4,7 +4,7 @@ const ProjectModal = ({ project, onClose }) => {
   const modalRef = useRef(null);
   const [showGameModal, setShowGameModal] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
+  const [isAutoPaused, setIsAutoPaused] = useState(false); // Manually paused by user
   const [direction, setDirection] = useState('right'); // 'left' or 'right' to control animation direction
   const [isAnimating, setIsAnimating] = useState(false); // Track if animation is in progress
   
@@ -13,15 +13,19 @@ const ProjectModal = ({ project, onClose }) => {
   
   // Auto-cycle through images every 5 seconds
   useEffect(() => {
-    // Only set up interval if there are multiple images and auto-cycling is not paused
-    if (images.length > 1 && !isPaused) {
+    // Only set up interval if there are multiple images and auto-cycling is not paused by user
+    if (images.length > 1 && !isAutoPaused) {
       const interval = setInterval(() => {
+        // Use the 'right' direction for auto-cycling
+        setDirection('right');
+        setIsAnimating(true);
         setCurrentImageIndex((prevIndex) => (prevIndex === images.length - 1 ? 0 : prevIndex + 1));
+        setTimeout(() => setIsAnimating(false), 700); // Match with animation duration
       }, 5000); // 5 seconds
       
       return () => clearInterval(interval); // Clean up on unmount or when dependencies change
     }
-  }, [images, isPaused]);
+  }, [images, isAutoPaused]);
   
   // Function to handle manual navigation
   const handleManualNavigation = (index, navigateDirection) => {
@@ -34,16 +38,11 @@ const ProjectModal = ({ project, onClose }) => {
     
     // Update the current image index
     setCurrentImageIndex(index);
-    
-    // Pause auto-cycling when user manually navigates
-    setIsPaused(true);
-    
-    // Resume auto-cycling after 10 seconds of inactivity
-    const timeout = setTimeout(() => {
-      setIsPaused(false);
-    }, 10000);
-    
-    return () => clearTimeout(timeout); // Clean up timeout
+  };
+  
+  // Toggle play/pause for the auto-cycling
+  const toggleAutoPlay = () => {
+    setIsAutoPaused(prevState => !prevState);
   };
 
   useEffect(() => {
@@ -185,6 +184,24 @@ const ProjectModal = ({ project, onClose }) => {
                     />
                   ))}
                 </div>
+                
+                {/* Play/Pause button */}
+                <button
+                  onClick={toggleAutoPlay}
+                  className="absolute bottom-4 right-4 bg-purple-700 bg-opacity-80 hover:bg-purple-800 text-white p-2 rounded-full focus:outline-none transition-all duration-200 shadow-lg cursor-pointer"
+                  aria-label={isAutoPaused ? 'Play slideshow' : 'Pause slideshow'}
+                >
+                  {isAutoPaused ? (
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  ) : (
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  )}
+                </button>
               </>
             )}
           </div>
