@@ -143,11 +143,11 @@ const experiences = [
       url: "https://www.ptc.com/"
     }
   },
-  {
+ /* {
     date: "November 2024 - Present",
     title: "Personal Financial Analyst (Self Employed)",
     description: "Leveraging my financial market expertise while transitioning in my Software Career to augment my income and keep myself busy. Started developing algorithmic trading strategies with high Sharpe Ratios to leverage my software development skills and automate my trading. Building proprietary indicators including the Fibonacci Moving Average, and educating new traders on Market Fundamentals through the Elite Trader Society community.",
-  },
+  },*/
   {
     date: "July 2025 - Present",
     title: "Senior Applications Developer at US Steel",
