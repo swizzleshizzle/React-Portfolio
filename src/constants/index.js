@@ -149,9 +149,18 @@ const experiences = [
     description: "Leveraging my financial market expertise while transitioning in my Software Career to augment my income and keep myself busy. Started developing algorithmic trading strategies with high Sharpe Ratios to leverage my software development skills and automate my trading. Building proprietary indicators including the Fibonacci Moving Average, and educating new traders on Market Fundamentals through the Elite Trader Society community.",
   },
   {
+    date: "July 2025 - Present",
+    title: "Senior Applications Developer at US Steel",
+    description: "Joined US Steel as a Senior Applications Developer, working on the development and maintenance of internal applications and systems. Leveraging my IoT development background to help drive the future of Industry 4.0 initiatives within a live industrial production environment.",
+    link: {
+      text: "US Steel",
+      url: "https://www.ussteel.com/"
+    }
+  },
+  {
     date: "Future?",
-    title: "Working with YOU at YOUR Company",
-    description: "I am currently looking for opportunities to expand my skills and knowledge, potentially with you and your team. If you are interested in learning more about my skills and experience, please don't hesitate to contact me on LinkedIn.",
+    title: "Working on engaging side projects",
+    description: "I am always open to new opportunities to expand my skills and knowledge, collaborating with talented individuals, and contributing to meaningful projects. If you are interested in learning more about my skills and experience, please don't hesitate to contact me on LinkedIn or via my Email form below!",
     link: {
       text: "LinkedIn",
       url: "https://www.linkedin.com/in/michael-greene-ab59041b5/"
