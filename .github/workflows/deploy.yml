@@ -65,4 +65,10 @@ jobs:
 
       - name: Deploy via rsync
         run: |
-          rsync -e "ssh -p 21098 -o StrictHostKeyChecking=no" -avz --delete dist/ "$USER@$HOST:$TARGET_PATH"
+          # Co-tenant guard: $TARGET_PATH is the shared public_html root on swizzleshizzle.com.
+          # SC Trade Tracker lives at public_html/Tools/ (frontend + cPanel Passenger routing
+          # files under Tools/api/). Without these excludes, --delete will wipe that subdirectory
+          # and break the Node app's URL mapping. See StarCitizen_Trading_Tracker for the sibling app.
+          rsync -e "ssh -p 21098 -o StrictHostKeyChecking=no" -avz --delete \
+            --exclude 'Tools' --exclude 'Tools/***' \
+            dist/ "$USER@$HOST:$TARGET_PATH"
