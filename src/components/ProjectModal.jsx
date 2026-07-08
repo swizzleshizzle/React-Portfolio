@@ -47,18 +47,26 @@ const ProjectModal = ({ project, onClose }) => {
     setIsAutoPaused(prevState => !prevState);
   };
 
+  // Keep the latest onClose in a ref so the focus-management effect below can
+  // stay mount-only ([]) without capturing a stale closure from the parent's
+  // inline onClose prop.
+  const onCloseRef = useRef(onClose);
+  useEffect(() => {
+    onCloseRef.current = onClose;
+  }, [onClose]);
+
   useEffect(() => {
     // Add event listener to close modal when clicking outside
     const handleClickOutside = (event) => {
       if (modalRef.current && !modalRef.current.contains(event.target)) {
-        onClose();
+        onCloseRef.current();
       }
     };
 
     // Add event listener to close modal on ESC key, and trap Tab/Shift+Tab
     const handleEscKey = (event) => {
       if (event.key === 'Escape') {
-        onClose();
+        onCloseRef.current();
         return;
       }
 
@@ -111,7 +119,9 @@ const ProjectModal = ({ project, onClose }) => {
         previouslyFocusedElementRef.current.focus();
       }
     };
-  }, [onClose]);
+    // Intentionally mount-only: onClose is read via onCloseRef so this effect
+    // (focus trap, body scroll lock, focus restore) runs once per modal open.
+  }, []);
 
   if (!project) return null;
 
