@@ -771,7 +771,7 @@ function HeroThree() {
   }, []);
 
   return (
-    <div className={`hero-three-container`}>
+    <div className={`hero-three-container`} aria-hidden="true" role="presentation">
       <CanvasWrapper scrollProgress={scrollProgress} />
     </div>
   )

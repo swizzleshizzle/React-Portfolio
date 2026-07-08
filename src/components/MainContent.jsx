@@ -42,6 +42,7 @@ const MainContent = () => {
             
             {/* Hero Section - Shown first in the center */}
             <ScrollSection id="hero" isHero={true}>
+                <h1 className="sr-only">Michael Greene - Software Engineer</h1>
                 <div className="w-full h-full">
                     <HeroThree />
                 </div>

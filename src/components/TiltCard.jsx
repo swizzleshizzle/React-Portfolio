@@ -192,9 +192,9 @@ const TiltCard = ({ title, description, icon, children }) => {
                             />
                         </div>
                     )}
-                    <h5 className="mb-2 text-2xl font-bold tracking-tight text-white relative z-10">
+                    <h3 className="mb-2 text-2xl font-bold tracking-tight text-white relative z-10">
                         {title}
-                    </h5>
+                    </h3>
                     <p className="font-normal text-gray-400 relative z-10">
                         {description}
                     </p>
