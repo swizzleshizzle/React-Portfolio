@@ -708,7 +708,7 @@ function CanvasWrapper({ scrollProgress = 0 }) {
   return (
     <Canvas
       camera={{ position: [0, 0, 15], fov: 75 }}
-      dpr={window.devicePixelRatio}
+      dpr={[1, 2]}
       gl={{ antialias: true }}
     >
       <color attach="background" args={[BACKGROUND_COLOR]} />

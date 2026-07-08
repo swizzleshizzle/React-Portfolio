@@ -2,13 +2,7 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.jsx'
-import { scan } from "react-scan"; // must be imported before React and React DOM
-import React from "react";
 
-
-scan({
-  enabled: false,
-});
 // Disable right-click context menu on Three.js elements
 document.addEventListener('contextmenu', (e) => {
   // Check if the target is a canvas or within the word cloud container

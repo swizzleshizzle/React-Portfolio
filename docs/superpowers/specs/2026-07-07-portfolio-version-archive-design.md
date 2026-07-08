@@ -25,6 +25,8 @@ This spec covers the **infrastructure** to freeze, list, and switch versions, pl
 
 Each version is captured as its **compiled build output** and committed to the repo. It is never rebuilt. This is the critical choice, driven by the Three.js-heavy stack: `three` / `@react-three/fiber` / `drei` break frequently across versions, and the 780-line R3F hero is exactly the kind of code a future upgrade would break. Freezing the *built artifact* (not the source) means old versions are immutable static files — zero ongoing maintenance, perfect fidelity.
 
+> **⚠️ REDLINE (2026-07-07 review):** Accepted cost, stated explicitly: each snapshot commits a full build (~4–6 MB: Three.js vendor chunk + ~2.4 MB GLB/image assets + ~0.5 MB public) to git **permanently**. Fine at one version/year; irreversible without history rewriting. Landing the Phase 0 favicon fix first saves ~1.26 MB per snapshot.
+
 **Rejected alternatives:**
 - *Living in one codebase* (all versions as component trees sharing today's deps): smoother switching, but a future `three`/React upgrade could silently break frozen versions, and every version's code would ship forever in one growing bundle. Defeats the archival goal.
 - *Rebuilt from git tags in CI*: keeps the repo clean, but rebuilding re-runs against the lockfile and can rot; partly defeats "frozen."
@@ -46,6 +48,8 @@ Stable **sequential paths** (`/archive/v1/`) with **rich labels in the manifest*
 The `VersionSwitcher` is baked into every version, but it **fetches `/versions.json` at runtime** (absolute root path, so all versions read the same canonical manifest). A frozen v1 built today will automatically list v3 added years later — its code is frozen, its data is live.
 
 **Accepted caveat:** the switcher's *own look* is frozen inside each old version. Redesigning the badge later leaves old versions with the old badge. This is acceptable — even authentic to an archive.
+
+> **⚠️ REDLINE (2026-07-07 review):** The deployed `.htaccess` caches `application/json` for **1 week** (`ExpiresByType application/json "access plus 1 week"`), which undermines this live-manifest mechanism — after cutting a new version, visitors and frozen builds may see a stale manifest for up to a week. Add a `Cache-Control: no-cache` carve-out for `versions.json` (or cache-bust the fetch). Also: the snapshot script should strip the nested `.htaccess` copy from each snapshot along with the nested `archive/` dir.
 
 ### Manifest schema (`public/versions.json`)
 ```json
@@ -74,6 +78,8 @@ The deployed `public/.htaccess` rewrites non-file/non-dir requests to `index.htm
 
 Clean separation with the existing rewrite rule.
 
+> **⚠️ REDLINE (2026-07-07 review):** The claim above is **wrong once the archive exists**. Creating `public/archive/v1/` makes `dist/archive/` a *real directory* on the server, so the rewrite's `!-d` condition no longer matches `/archive` — Apache will serve the bare directory (403 or listing) instead of the SPA. **`.htaccess` changes ARE needed:** add an explicit rule such as `RewriteRule ^archive/?$ /index.html [L]` ahead of the generic fallback (or move the archive page to a URL that is never a real directory, e.g. `/versions`).
+
 ---
 
 ## Components
@@ -92,6 +98,8 @@ Each build is stamped with its version id so the badge knows where it sits:
 - A snapshot build: the snapshot script passes `VITE_VERSION_ID=<id>` for that build.
 
 The badge reads `import.meta.env.VITE_VERSION_ID`, finds itself in the manifest, and renders "current" state accordingly.
+
+> **⚠️ REDLINE (2026-07-07 review):** "from `.env` or default" has no production delivery mechanism — the prod `.env` is generated inside `deploy.yml` (Create .env file step), so that step **must also write `VITE_VERSION_ID`** or the live site's badge won't know its own version. The badge must also degrade gracefully when `VITE_VERSION_ID` is unset (local dev) and when a manifest entry's `thumbnail` is missing.
 
 ### `VersionSwitcher` behavior
 - On mount: `fetch('/versions.json')`. On failure (e.g. offline/dev without manifest): render nothing or a static fallback — never block the page.
