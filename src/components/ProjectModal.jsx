@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from 'react';
 
 const ProjectModal = ({ project, onClose }) => {
   const modalRef = useRef(null);
+  const closeButtonRef = useRef(null);
+  const previouslyFocusedElementRef = useRef(null);
   const [showGameModal, setShowGameModal] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isAutoPaused, setIsAutoPaused] = useState(false); // Manually paused by user
@@ -53,10 +55,33 @@ const ProjectModal = ({ project, onClose }) => {
       }
     };
 
-    // Add event listener to close modal on ESC key
+    // Add event listener to close modal on ESC key, and trap Tab/Shift+Tab
     const handleEscKey = (event) => {
       if (event.key === 'Escape') {
         onClose();
+        return;
+      }
+
+      if (event.key === 'Tab' && modalRef.current) {
+        const focusableElements = modalRef.current.querySelectorAll(
+          'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])'
+        );
+        if (focusableElements.length === 0) return;
+
+        const firstElement = focusableElements[0];
+        const lastElement = focusableElements[focusableElements.length - 1];
+
+        if (event.shiftKey) {
+          if (document.activeElement === firstElement) {
+            event.preventDefault();
+            lastElement.focus();
+          }
+        } else {
+          if (document.activeElement === lastElement) {
+            event.preventDefault();
+            firstElement.focus();
+          }
+        }
       }
     };
 
@@ -68,12 +93,23 @@ const ProjectModal = ({ project, onClose }) => {
     // Add modal-open class to body for CSS targeting
     document.body.classList.add('modal-open');
 
+    // Remember what was focused before the modal opened, then move focus into the modal
+    previouslyFocusedElementRef.current = document.activeElement;
+    if (closeButtonRef.current) {
+      closeButtonRef.current.focus();
+    }
+
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
       document.removeEventListener('keydown', handleEscKey);
       document.body.style.overflow = 'auto';
       // Remove modal-open class when modal is closed
       document.body.classList.remove('modal-open');
+
+      // Restore focus to the element that was focused before the modal opened
+      if (previouslyFocusedElementRef.current && typeof previouslyFocusedElementRef.current.focus === 'function') {
+        previouslyFocusedElementRef.current.focus();
+      }
     };
   }, [onClose]);
 
@@ -81,17 +117,22 @@ const ProjectModal = ({ project, onClose }) => {
 
   return (
     <div className="fixed inset-0 z-70 flex items-center justify-center p-4">
-      <div 
+      <div
         ref={modalRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="project-modal-title"
         className="relative bg-gray-800 rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto"
-        style={{ 
+        style={{
           transform: 'scale(1)',
           animation: 'modal-pop 0.3s ease-out'
         }}
       >
         {/* Close button */}
-        <button 
+        <button
+          ref={closeButtonRef}
           onClick={onClose}
+          aria-label="Close project details"
           className="absolute top-4 right-4 text-gray-400 hover:text-gray-200 z-[50]"
         >
           <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -209,7 +250,7 @@ const ProjectModal = ({ project, onClose }) => {
 
         {/* Project content */}
         <div className="p-6">
-          <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
+          <h2 id="project-modal-title" className="text-2xl md:text-3xl font-bold text-white mb-4">
             {project.title}
           </h2>
           
