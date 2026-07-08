@@ -21,7 +21,7 @@ P1 was executed with subagent-driven development: plan at `docs/superpowers/plan
 
 1. **EmailJS dashboard** (review item S1): enable **domain allowlisting** (swizzleshizzle.com) and **reCAPTCHA** on the contact form template. Cannot be done in code.
 2. **Verify EmailJS template routing**: code now sends `recipientEmail` from `VITE_EMAILJS_EMAIL` (renamed from `VITE_APP_EMAILJS_EMAIL` in P1). Confirm the GitHub secret `EMAILJS_EMAIL` exists and the template's "To" field is set the way you expect.
-3. **Projects-section refresh** (the design spec's ⏸ Manual gate before Phase 1): decide which recently-public repos to expose and provide copy/images — agents can do the implementation once you scope it.
+3. **Projects-section refresh** (the design spec's ⏸ Manual gate before Phase 1): first addition is scoped and prepped — see `docs/superpowers/specs/2026-07-08-projects-refresh-prep.md` (Agentic Meal Planner: screenshot checklist for Michael, drafted entry + copy, implementation steps; no live demo — the app is full-stack and intentionally unauthenticated, so GitHub Pages is not an option). Michael: capture screenshots, review the drafted copy, and answer the doc's two open questions.
 4. Optional sanity pass: run `npm install && npm run dev` and click through — mobile hamburger, project modal (Tab/Escape/focus), contact form, pinch-zoom on a phone.
 
 ## Next agent: P2 batch (branch `phase0/p2-hardening`)
