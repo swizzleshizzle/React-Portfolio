@@ -755,18 +755,21 @@ function HeroThree() {
 
     window.addEventListener('scroll', handleScroll);
 
-    window.addEventListener("mousedown", (e) => {
+    const handleMouseDown = (e) => {
       const color = hightlightColors.shift();
       document.documentElement.style.setProperty("--highlight-color", color);
       hightlightColors.push(color);
-    });
-    
+    };
+
+    window.addEventListener("mousedown", handleMouseDown);
+
     // Call once on mount to initialize
     handleScroll();
 
     // Clean up
     return () => {
       window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('mousedown', handleMouseDown);
     };
   }, []);
 

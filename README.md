@@ -56,7 +56,7 @@ A modern, responsive portfolio website built with React and Three.js, featuring 
      VITE_EMAILJS_SERVICEID=your_service_id
      VITE_EMAILJS_TEMPLATEID=your_template_id
      VITE_EMAILJS_PUBLICKEY=your_public_key
-     VITE_APP_EMAILJS_EMAIL=your_recipient_email
+     VITE_EMAILJS_EMAIL=your_recipient_email
      ```
    - These variables are used in `src/config/emailjs.js` and will be automatically loaded by Vite
    - Make sure `.env` is in your `.gitignore` to keep your credentials secure
@@ -109,7 +109,7 @@ This project includes a GitHub Actions workflow for automated deployment. To set
    - `VITE_EMAILJS_SERVICEID`: Your EmailJS service ID
    - `VITE_EMAILJS_TEMPLATEID`: Your EmailJS template ID
    - `VITE_EMAILJS_PUBLICKEY`: Your EmailJS public key
-   - `VITE_APP_EMAILJS_EMAIL`: Your recipient email address
+   - `VITE_EMAILJS_EMAIL`: Your recipient email address
 
 3. Update the GitHub workflow file (`.github/workflows/deploy.yml`) to include these environment variables:
    ```yaml
@@ -119,7 +119,7 @@ This project includes a GitHub Actions workflow for automated deployment. To set
        VITE_EMAILJS_SERVICEID: ${{ secrets.VITE_EMAILJS_SERVICEID }}
        VITE_EMAILJS_TEMPLATEID: ${{ secrets.VITE_EMAILJS_TEMPLATEID }}
        VITE_EMAILJS_PUBLICKEY: ${{ secrets.VITE_EMAILJS_PUBLICKEY }}
-       VITE_APP_EMAILJS_EMAIL: ${{ secrets.VITE_APP_EMAILJS_EMAIL }}
+       VITE_EMAILJS_EMAIL: ${{ secrets.VITE_EMAILJS_EMAIL }}
    ```
 
 4. Push to the main branch to trigger deployment to production, or to the dev branch to deploy to staging.

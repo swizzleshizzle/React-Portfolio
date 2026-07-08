@@ -6,6 +6,6 @@ export const EMAILJS_CONFIG = {
   publicKey: import.meta.env.VITE_EMAILJS_PUBLICKEY, // Your EmailJS public key
   
   // The email address that will receive the contact form submissions
-  recipientEmail: import.meta.env.VITE_APP_EMAILJS_EMAIL
+  recipientEmail: import.meta.env.VITE_EMAILJS_EMAIL
 };
 
