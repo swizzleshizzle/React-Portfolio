@@ -25,8 +25,7 @@ export default defineConfig({
         manualChunks: {
           // Split vendor code into separate chunks for better caching
           vendor: ['react', 'react-dom', 'react-router-dom'],
-          three: ['three', '@react-three/fiber', '@react-three/drei'],
-          animations: ['framer-motion']
+          three: ['three', '@react-three/fiber', '@react-three/drei']
         }
       }
     }

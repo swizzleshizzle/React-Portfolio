@@ -10,7 +10,6 @@ import ExperienceTimeline from './ExperienceTimeline';
 import ContactForm from './ContactForm';
 import SocialLinks from './SocialLinks';
 import TradingViewWidget from './TVEmbed';
-import { motion } from 'framer-motion';
 
 const MainContent = () => {
     // Debug log to check component loading

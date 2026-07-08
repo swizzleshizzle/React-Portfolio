@@ -3,7 +3,6 @@ import { useRef, useState, useMemo, useEffect, Suspense } from 'react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { Billboard, Text, TrackballControls } from '@react-three/drei'
 import { skills } from '../constants'
-import StarField from './StarField'
 import ParticleExplosion from './ParticleExplosion'
 
 // Background color that matches the dark theme of the website
