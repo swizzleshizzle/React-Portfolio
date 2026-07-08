@@ -135,18 +135,20 @@ button:focus-visible {
 
 /* Mobile touch improvements */
 @media (max-width: 768px) {
-  /* Prevent text selection on touch */
-  * {
+  /* Prevent text selection on touch for 3D/canvas containers only */
+  canvas,
+  .word-cloud-container,
+  #background {
     -webkit-tap-highlight-color: transparent;
     -webkit-touch-callout: none;
     user-select: none;
   }
-  
+
   /* Allow text selection in input fields and textareas */
   input, textarea {
     user-select: text;
   }
-  
+
   /* Improve touch targets */
   button, a, [role="button"] {
     min-height: 44px;
@@ -217,6 +219,20 @@ canvas::-webkit-context-menu {
 
 .word-cloud-container::-webkit-context-menu {
   display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto !important;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 @media (prefers-color-scheme: light) {

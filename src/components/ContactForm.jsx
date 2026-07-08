@@ -90,7 +90,7 @@ const ContactForm = () => {
   return (
     <div className="bg-gray-800/94 rounded-lg shadow-lg p-6">
       {formStatus.isSubmitted ? (
-        <div className="text-center py-8">
+        <div className="text-center py-8" role="status">
           <svg className="w-16 h-16 text-green-500 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
           </svg>
@@ -115,9 +115,11 @@ const ContactForm = () => {
               onChange={handleChange}
               className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white"
               required
+              aria-invalid={!!formStatus.error && !formData.name}
+              aria-describedby={formStatus.error ? 'form-error' : undefined}
             />
           </div>
-          
+
           <div>
             <label htmlFor="company" className="block text-sm font-medium text-gray-300 mb-1">Company</label>
             <input
@@ -129,7 +131,7 @@ const ContactForm = () => {
               className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white"
             />
           </div>
-          
+
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-1">Email <span className="text-red-500">*</span></label>
             <input
@@ -140,9 +142,11 @@ const ContactForm = () => {
               onChange={handleChange}
               className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white"
               required
+              aria-invalid={!!formStatus.error && !formData.email}
+              aria-describedby={formStatus.error ? 'form-error' : undefined}
             />
           </div>
-          
+
           <div>
             <label htmlFor="message" className="block text-sm font-medium text-gray-300 mb-1">Message <span className="text-red-500">*</span></label>
             <textarea
@@ -153,11 +157,13 @@ const ContactForm = () => {
               rows="4"
               className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white"
               required
+              aria-invalid={!!formStatus.error && !formData.message}
+              aria-describedby={formStatus.error ? 'form-error' : undefined}
             ></textarea>
           </div>
-          
+
           {formStatus.error && (
-            <div className="text-red-500 text-sm">
+            <div id="form-error" role="alert" className="text-red-500 text-sm">
               {formStatus.error}
             </div>
           )}
