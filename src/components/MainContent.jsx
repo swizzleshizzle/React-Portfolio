@@ -1,6 +1,6 @@
 import React, { Suspense, useEffect, useState } from 'react';
 import WordCloud from './WordCloud';
-import { serviceCards, projects, experiences } from '../constants';
+import { serviceCards, projects, experiences, skills } from '../constants';
 import TiltCard from './TiltCard';
 import ScrollSection from './ScrollSection';
 import HeroThree from './HeroThree';
@@ -10,6 +10,37 @@ import ExperienceTimeline from './ExperienceTimeline';
 import ContactForm from './ContactForm';
 import SocialLinks from './SocialLinks';
 import TradingViewWidget from './TVEmbed';
+import ErrorBoundary from './ErrorBoundary';
+
+// Fallback shown if the HeroThree WebGL canvas throws. Keeps the same
+// full-height layout so the page doesn't jump when the hero errors out.
+const HeroFallback = () => (
+    <div
+        className="w-full h-full flex flex-col items-center justify-center text-center px-4"
+        style={{ backgroundColor: '#242424' }}
+    >
+        <h2 className="text-3xl font-bold text-white">Michael Greene</h2>
+        <p className="text-lg mt-2" style={{ color: '#cfdbe8' }}>Software Engineer</p>
+    </div>
+);
+
+// Fallback shown if the WordCloud WebGL canvas throws. Falls back to a
+// simple text list of skills pulled from constants.
+const WordCloudFallback = () => (
+    <div className="py-4 text-center" style={{ color: '#cfdbe8' }}>
+        <p className="flex flex-wrap justify-center gap-2">
+            {skills.map((skill) => (
+                <span
+                    key={skill}
+                    className="px-2 py-1 rounded-md text-sm"
+                    style={{ backgroundColor: '#242424' }}
+                >
+                    {skill}
+                </span>
+            ))}
+        </p>
+    </div>
+);
 
 const MainContent = () => {
     // Debug log to check component loading
@@ -44,7 +75,9 @@ const MainContent = () => {
             <ScrollSection id="hero" isHero={true}>
                 <h1 className="sr-only">Michael Greene - Software Engineer</h1>
                 <div className="w-full h-full">
-                    <HeroThree />
+                    <ErrorBoundary fallback={<HeroFallback />}>
+                        <HeroThree />
+                    </ErrorBoundary>
                 </div>
             </ScrollSection>
 
@@ -68,9 +101,11 @@ const MainContent = () => {
                     {/* Word Cloud Component */}
                     <div className="my-0">
                         <h2 className="text-3xl font-bold text-white mb-8">My Skill Set</h2>
-                        <Suspense fallback={<div className="py-8 text-center rounded-md bg-300% animate-gradient bg-gradient-to-r to-violet-600 via-green-300 from-sky-400">Loading Skills Cloud...</div>}>
-                            <WordCloud count={6} radius={30} />
-                        </Suspense>
+                        <ErrorBoundary fallback={<WordCloudFallback />}>
+                            <Suspense fallback={<div className="py-8 text-center rounded-md bg-300% animate-gradient bg-gradient-to-r to-violet-600 via-green-300 from-sky-400">Loading Skills Cloud...</div>}>
+                                <WordCloud count={6} radius={30} />
+                            </Suspense>
+                        </ErrorBoundary>
                     </div>
                 </ScrollSection>
 
