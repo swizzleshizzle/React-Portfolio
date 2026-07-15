@@ -138,7 +138,7 @@ button:focus-visible {
   /* Prevent text selection on touch for 3D/canvas containers only */
   canvas,
   .word-cloud-container,
-  #background {
+  #backgroundViz {
     -webkit-tap-highlight-color: transparent;
     -webkit-touch-callout: none;
     user-select: none;

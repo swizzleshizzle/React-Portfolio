@@ -40,13 +40,6 @@ jobs:
           echo "USER=${{ secrets.REMOTE_USER }}" >> $GITHUB_ENV
           echo "TARGET_PATH=${{ secrets.REMOTE_PATH }}" >> $GITHUB_ENV
 
-      - name: Debug environment variables
-        run: |
-          echo "Deploying to $DEPLOY_ENV"
-          echo "Host: $HOST"
-          echo "User: $USER"
-          echo "Path: $TARGET_PATH"
-
       - name: Setup SSH manually
         run: |
           echo "HOST is: $HOST"
