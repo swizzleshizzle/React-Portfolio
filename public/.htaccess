@@ -21,8 +21,11 @@ RewriteRule ^(.*)$ http://swizzleshizzle.com/$1 [L,R=301]
     # Referrer policy
     Header set Referrer-Policy "strict-origin-when-cross-origin"
     
-    # Content Security Policy - adjusted to allow web workers, CDNs, and EmailJS
-    Header set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' blob:; worker-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data:; font-src 'self' https://cdn.jsdelivr.net https://fonts.gstatic.com; connect-src 'self' https://cdn.jsdelivr.net https://fonts.gstatic.com https://api.emailjs.com"
+    # Content Security Policy - allows web workers, CDNs, and EmailJS.
+    # 'unsafe-inline' dropped from script-src (no inline executable scripts remain;
+    # the JSON-LD block is non-executable). 'unsafe-eval' retained: Three.js/Vanta may
+    # require it — test removal on staging before dropping. frame-ancestors blocks framing.
+    Header set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-eval' blob:; worker-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data:; font-src 'self' https://cdn.jsdelivr.net https://fonts.gstatic.com; connect-src 'self' https://cdn.jsdelivr.net https://fonts.gstatic.com https://api.emailjs.com; frame-ancestors 'self'"
 </IfModule>
 
 # Enable CORS
