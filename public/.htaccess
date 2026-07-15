@@ -1,14 +1,25 @@
 # Enable rewriting
 RewriteEngine On
 
+# Force HTTPS (must run before the SPA fallback, which would otherwise [L]-stop first)
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [L,R=301]
+
+# Redirect www to apex, over HTTPS
+RewriteCond %{HTTP_HOST} ^www\.swizzleshizzle\.com$ [NC]
+RewriteRule ^(.*)$ https://swizzleshizzle.com/$1 [L,R=301]
+
+# Serve the SPA for the /archive page even once public/archive/ exists as a real
+# directory (the generic fallback's !-d test would otherwise skip it, and Apache
+# would serve a bare directory/403). Frozen builds under /archive/v1/ etc. are
+# real dirs and continue to be served directly.
+RewriteRule ^archive/?$ index.html [L]
+
 # If the request is not for a file, directory, or symlink, redirect to index.html
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-l
 RewriteRule ^ index.html [QSA,L]
-
-RewriteCond %{HTTP_HOST} ^www\.swizzleshizzle\.com$ [NC]
-RewriteRule ^(.*)$ http://swizzleshizzle.com/$1 [L,R=301]
 
 # Set security headers
 <IfModule mod_headers.c>
@@ -20,7 +31,11 @@ RewriteRule ^(.*)$ http://swizzleshizzle.com/$1 [L,R=301]
     
     # Referrer policy
     Header set Referrer-Policy "strict-origin-when-cross-origin"
-    
+
+    # HTTP Strict Transport Security (1 year). No includeSubDomains/preload yet —
+    # add those once HTTPS is confirmed working across every subdomain.
+    Header always set Strict-Transport-Security "max-age=31536000"
+
     # Content Security Policy - allows web workers, CDNs, and EmailJS.
     # 'unsafe-inline' dropped from script-src (no inline executable scripts remain;
     # the JSON-LD block is non-executable). 'unsafe-eval' retained: Three.js/Vanta may
@@ -28,9 +43,13 @@ RewriteRule ^(.*)$ http://swizzleshizzle.com/$1 [L,R=301]
     Header set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-eval' blob:; worker-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data:; font-src 'self' https://cdn.jsdelivr.net https://fonts.gstatic.com; connect-src 'self' https://cdn.jsdelivr.net https://fonts.gstatic.com https://api.emailjs.com; frame-ancestors 'self'"
 </IfModule>
 
-# Enable CORS
+# Always revalidate the version manifest so a freshly-cut version appears
+# immediately (overrides the 1-week application/json cache set below).
 <IfModule mod_headers.c>
-    Header set Access-Control-Allow-Origin "*"
+    <FilesMatch "versions\.json$">
+        Header set Cache-Control "no-cache, must-revalidate"
+        Header unset Expires
+    </FilesMatch>
 </IfModule>
 
 # Enable compression
